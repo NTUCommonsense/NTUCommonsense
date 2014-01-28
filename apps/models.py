@@ -14,7 +14,7 @@ class _CRUDMixin(object):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
 
     @classmethod
-    def get_by_id(cls, id):
+    def get(cls, id):
         if isinstance(id, (int, float)) or \
            (isinstance(id, basestring) and id.isdigit()):
             return cls.query.get(int(id))
