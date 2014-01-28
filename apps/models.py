@@ -7,10 +7,43 @@ __all__ = ('db',)
 db = SQLAlchemy()
 
 
-class Project(db.Model):
+class _CRUDMixin(object):
+    __table_args__ = {'extend_existing': True,
+                      'sqlite_autoincrement': True}
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+
+    @classmethod
+    def get_by_id(cls, id):
+        if isinstance(id, (int, float)) or \
+           (isinstance(id, basestring) and id.isdigit()):
+            return cls.query.get(int(id))
+        return None
+
+    @classmethod
+    def create(cls, **kwargs):
+        instance = cls(**kwargs)
+        return instance.save()
+
+    def update(self, commit=True, **kwargs):
+        for attr, value in kwargs.iteritems():
+            setattr(self, attr, value)
+        return commit and self.save() or self
+
+    def save(self, commit=True):
+        db.session.add(self)
+        if commit:
+            db.session.commit()
+        return self
+
+    def delete(self, commit=True):
+        db.session.delete(self)
+        return commit and db.session.commit()
+
+
+class Project(_CRUDMixin, db.Model):
     __tablename__ = 'project'
 
-    id = db.Column(db.Integer, primary_key=True)
     short_name = db.Column(db.String(8), unique=True)
     name = db.Column(db.String(32))
     short_desc = db.Column(db.String(128))
@@ -24,38 +57,33 @@ class Project(db.Model):
     downloads = db.relationship('Download', backref='project', lazy='dynamic')
 
 
-class Publication(db.Model):
+class Publication(_CRUDMixin, db.Model):
     __tablename__ = 'publication'
 
-    id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
 
-class Application(db.Model):
+class Application(_CRUDMixin, db.Model):
     __tablename__ = 'application'
 
-    id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
 
-class Software(db.Model):
+class Software(_CRUDMixin, db.Model):
     __tablename__ = 'software'
 
-    id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
 
-class Download(db.Model):
+class Download(_CRUDMixin, db.Model):
     __tablename__ = 'download'
 
-    id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
 
-class Contact(db.Model):
+class Contact(_CRUDMixin, db.Model):
     __tablename__ = 'contact'
 
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     email = db.Column(db.String(64))
 
