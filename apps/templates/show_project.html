@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ name }}{% endblock %}
+{%- block content %}
+      <div class="jumbotron">
+        <div class="container">
+          <h1>{{ project.name }}</h1>
+          <p>{{ project.short_desc }}</p>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="list-group" role="complementary">
+              <a href="#desc" class="list-group-item">Description</a>
+              <a href="#pubs" class="list-group-item">Publications</a>
+              <a href="#apps" class="list-group-item">Applications</a>
+              <a href="#api" class="list-group-item">API Reference</a>
+              <a href="#software" class="list-group-item">Software</a>
+              <a href="#download" class="list-group-item">Data Download</a>
+              <a href="#contact" class="list-group-item">Contact Information</a>
+            </div>
+          </div>
+          <div class="col-md-9" role="main">
+            <div class="section">
+              <div class="page-header">
+                <h1 id="desc">Description</h1>
+              </div>
+              <p>{{ project.desc }}</p>
+              <p class="pull-right"><a href="#">Back to top</a></p>
+            </div>
+            <div class="section">
+              <div class="page-header">
+                <h1 id="pubs">Publications</h1>
+              </div>
+              <p>some text here</p>
+              <p class="pull-right"><a href="#">Back to top</a></p>
+            </div>
+            <div class="section">
+              <div class="page-header">
+                <h1 id="apps">Applications</h1>
+              </div>
+              <p>some text here</p>
+              <p class="pull-right"><a href="#">Back to top</a></p>
+            </div>
+            <div class="section">
+              <div class="page-header">
+                <h1 id="api">API Reference</h1>
+              </div>
+              <p>some text here</p>
+              <p class="pull-right"><a href="#">Back to top</a></p>
+            </div>
+            <div class="section">
+              <div class="page-header">
+                <h1 id="software">Software</h1>
+              </div>
+              <p>some text here</p>
+              <p class="pull-right"><a href="#">Back to top</a></p>
+            </div>
+            <div class="section">
+              <div class="page-header">
+                <h1 id="download">Data Download</h1>
+              </div>
+              <p>some text here</p>
+              <p class="pull-right"><a href="#">Back to top</a></p>
+            </div>
+            <div class="section">
+              <div class="page-header">
+                <h1 id="contact">Contact Information</h1>
+              </div>
+              <p>some text here</p>
+              <p class="pull-right"><a href="#">Back to top</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+{%- endblock %}
