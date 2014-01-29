@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
+from flask.ext.login import LoginManager
 
 from . import filters
-from .models import db
+from .models import db, User
 
-__all__ = ('create_app', 'db')
+__all__ = ('create_app',)
 
 _MODULES = {
     'projects': '',
@@ -26,6 +27,11 @@ def create_app(name=None, create_db=False):
     db.init_app(app)
     if create_db:
         db.create_all()
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.user_loader(User.get)
+    login_manager.login_view = "/admin/login"
 
     for name, url_prefix in _MODULES.iteritems():
         module = 'modules.{}.views'.format(name)

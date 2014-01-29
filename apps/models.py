@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SQLAlchemy
 
 __all__ = ('db',)
@@ -41,6 +42,22 @@ class _CRUDMixin(object):
         return commit and db.session.commit()
 
 
+class User(_CRUDMixin, UserMixin, db.Model):
+    __tablename__ = 'user'
+
+    name = db.Column(db.String(32), unique=True)
+    pwd = db.Column(db.String(256))
+    email = db.Column(db.String(64))
+
+    @classmethod
+    def login(cls, name, pwd):
+        user = cls.query.filter_by(name=name).first()
+        if user is None or user.pwd != pwd:
+            return None
+
+        return user
+
+
 class Project(_CRUDMixin, db.Model):
     __tablename__ = 'project'
 
@@ -77,14 +94,5 @@ class Software(_CRUDMixin, db.Model):
 
 class Download(_CRUDMixin, db.Model):
     __tablename__ = 'download'
-
-    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
-
-
-class Contact(_CRUDMixin, db.Model):
-    __tablename__ = 'contact'
-
-    name = db.Column(db.String(32))
-    email = db.Column(db.String(64))
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
