@@ -8,6 +8,10 @@ __all__ = ('db',)
 
 db = SQLAlchemy()
 
+project_managers = db.Table('project_managers',
+    db.Column('project_id', db.Integer(), db.ForeignKey('project.id')),
+    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')))
+
 
 class _CRUDMixin(object):
     __table_args__ = {'extend_existing': True,
@@ -76,6 +80,8 @@ class Project(_CRUDMixin, db.Model):
     apps = db.relationship('Application', backref='project', lazy='dynamic')
     softwares = db.relationship('Software', backref='project', lazy='dynamic')
     downloads = db.relationship('Download', backref='project', lazy='dynamic')
+    managers = db.relationship('User', secondary=project_managers,
+                               backref='projects', lazy='dynamic')
 
 
 class Publication(_CRUDMixin, db.Model):
