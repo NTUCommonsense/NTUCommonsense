@@ -1,25 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Index{% endblock %}
-{% block content %}
-<div class="row">
-  <div class="col-md-3">
-    <div class="list-group" role="complementary">
-      <a href="#description" class="list-group-item">Description</a>
-      <a href="#publication" class="list-group-item">Publication</a>
-      <a href="#application" class="list-group-item">Application</a>
-      <a href="#reference" class="list-group-item">API Reference</a>
-      <a href="#software" class="list-group-item">Software</a>
-      <a href="#download" class="list-group-item">Data Download</a>
-      <a href="#contact" class="list-group-item">Contact Information</a>
-    </div>
-  </div>
-  <div class="col-md-9" role="main">
-    <div class="section">
-      <div class="page-header">
-        <h1 id="description">Description</h1>
+{% block title %}Welcome{% endblock %}
+{%- block content %}
+      <div class="jumbotron">
+        <div class="container">
+          <h1>Welcome</h1>
+          <p>some text here</p>
+        </div>
       </div>
-      <p>some text here</p>
-    </div>
-  </div>
-</div>
-{% endblock %}
+      <div class="container">
+      </div>
+{%- endblock %}
