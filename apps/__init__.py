@@ -2,6 +2,7 @@
 
 from flask import Flask
 
+from . import filters
 from .models import db
 
 __all__ = ('create_app', 'db')
@@ -18,6 +19,8 @@ def create_app(name=None, create_db=False):
 
     app = Flask(name)
     app.config.from_object('config')
+
+    filters.init_app(app)
 
     db.app = app
     db.init_app(app)

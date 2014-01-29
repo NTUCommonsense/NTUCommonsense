@@ -25,7 +25,7 @@
               <div class="page-header">
                 <h1 id="desc">Description</h1>
               </div>
-              <p>{{ project.desc }}</p>
+              <p>{{ project.desc|markdown|safe }}</p>
               <p class="pull-right"><a href="#">Back to top</a></p>
             </div>
             <div class="section">
