@@ -7,7 +7,7 @@ from .models import db
 __all__ = ('create_app', 'db')
 
 _MODULES = {
-    'projects': '/',
+    'projects': '',
     'admin': '/admin'
 }
 
