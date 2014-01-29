@@ -6,5 +6,5 @@ from . import module
 
 
 @module.route('/')
-def index():
-    return render_template('index.html')
+def signin():
+    return render_template('admin/signin.html')
