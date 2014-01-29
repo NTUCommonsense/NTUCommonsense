@@ -2,6 +2,7 @@
 
 from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SQLAlchemy
+from passlib.hash import sha256_crypt
 
 __all__ = ('db',)
 
@@ -52,10 +53,13 @@ class User(_CRUDMixin, UserMixin, db.Model):
     @classmethod
     def login(cls, name, pwd):
         user = cls.query.filter_by(name=name).first()
-        if user is None or user.pwd != pwd:
+        if user is None or not sha256_crypt.verify(pwd, user.pwd):
             return None
 
         return user
+
+    def set_pwd(self, pwd):
+        self.pwd = sha256_crypt.encrypt(pwd)
 
 
 class Project(_CRUDMixin, db.Model):
