@@ -5,6 +5,7 @@ from flask.ext.login import LoginManager
 
 from . import filters
 from .models import db, User
+from .views import module
 
 __all__ = ('create_app',)
 
@@ -31,11 +32,7 @@ def create_app(name=None, create_db=False):
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.user_loader(User.get)
-    login_manager.login_view = "/admin/login"
+    login_manager.login_view = "/login"
 
-    for name, url_prefix in _MODULES.iteritems():
-        module = 'modules.{}.views'.format(name)
-        views = __import__(module, globals(), locals(), ('module',), -1)
-        app.register_blueprint(views.module, url_prefix=url_prefix)
-
+    app.register_blueprint(module)
     return app

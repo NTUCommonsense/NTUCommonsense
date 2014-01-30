@@ -1,16 +1,26 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, url_for, redirect, render_template
+from flask import Blueprint, request, url_for, redirect, abort, render_template
 from flask.ext.login import current_user, login_user, logout_user, login_required
 
-from . import module
-from ...forms import SigninForm
+from .forms import SigninForm
+from .models import Project
+
+module = Blueprint('projects', __name__)
 
 
 @module.route('/')
-@login_required
 def index():
     return render_template('index.html')
+
+
+@module.route('/project/<project>')
+def show_project(project):
+    project = Project.query.filter_by(short_name=project).first()
+    if project is None:
+        return abort(404)
+
+    return render_template('show_project.html', project=project)
 
 
 @module.route('/login', methods=['GET', 'POST'])
@@ -23,7 +33,7 @@ def login():
         login_user(form.user)
         return redirect(request.args.get('next') or url_for('admin.index'))
 
-    return render_template('admin/signin.html', form=form)
+    return render_template('signin.html', form=form)
 
 
 @module.route('/logout')
