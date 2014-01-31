@@ -26,12 +26,12 @@ def show_project(project):
 @module.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user is not None and current_user.is_authenticated():
-        return redirect(url_for('admin.index'))
+        return redirect(url_for('.index'))
 
     form = SigninForm(request.form)
     if form.validate_on_submit():
         login_user(form.user)
-        return redirect(request.args.get('next') or url_for('admin.index'))
+        return redirect(request.args.get('next') or url_for('.index'))
 
     return render_template('signin.html', form=form)
 
@@ -40,4 +40,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('projects.index'))
+    return redirect(url_for('.index'))

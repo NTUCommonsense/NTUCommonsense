@@ -1,76 +1,130 @@
-{% extends "_base.html" %}
-{% block title %}{{ name }}{% endblock %}
+{% extends "_layout.html" %}
+{% set page_title = project.name %}
+{% set active_page = project.short_name %}
 {%- block content %}
-      <div class="jumbotron">
+      <header class="jumbotron">
         <div class="container">
           <h1>{{ project.name }}</h1>
           <p>{{ project.short_desc }}</p>
+          <p>
+            {%- set downloads = project.downloads|list %}
+            {%- set downloads_len = downloads|length %}
+            {%- if downloads_len == 1 %}
+            <a class="btn btn-primary btn-lg" href="{{ downloads[0].url }}" role="button">Download Data</a>
+            {%- elif downloads_len > 1 %}
+            <div class="btn-group">
+              <button class="btn btn-primary btn-lg dropdown-toggle" role="button" data-toggle="dropdown">Download Data <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                {%- for download in downloads %}
+                <li><a href="{{ download.url }}">{{ download.name }}</a></li>
+                {%- endfor %}
+              </ul>
+            </div>
+            {%- endif %}
+            <a class="btn btn-default btn-lg" href="{{ project.github_url }}" role="button">Visit Github Page »</a>
+          </p>
         </div>
-      </div>
+      </header>
       <div class="container">
         <div class="row">
-          <div class="col-md-3">
-            <div class="list-group" role="complementary">
-              <a href="#desc" class="list-group-item">Description</a>
+          <aside class="aside col-md-3" role="complementary">
+            <div class="list-group">
               <a href="#pubs" class="list-group-item">Publications</a>
               <a href="#apps" class="list-group-item">Applications</a>
-              <a href="#api" class="list-group-item">API Reference</a>
-              <a href="#software" class="list-group-item">Software</a>
-              <a href="#download" class="list-group-item">Data Download</a>
+              <a href="#apis" class="list-group-item">Web APIs</a>
               <a href="#contact" class="list-group-item">Contact Information</a>
             </div>
-          </div>
-          <div class="col-md-9" role="main">
-            <div class="section">
-              <div class="page-header">
-                <h1 id="desc">Description</h1>
-              </div>
-              <p>{{ project.desc|markdown|safe }}</p>
-              <p class="pull-right"><a href="#">Back to top</a></p>
-            </div>
-            <div class="section">
-              <div class="page-header">
-                <h1 id="pubs">Publications</h1>
-              </div>
-              <p>some text here</p>
-              <p class="pull-right"><a href="#">Back to top</a></p>
-            </div>
-            <div class="section">
-              <div class="page-header">
-                <h1 id="apps">Applications</h1>
-              </div>
-              <p>some text here</p>
-              <p class="pull-right"><a href="#">Back to top</a></p>
-            </div>
-            <div class="section">
-              <div class="page-header">
-                <h1 id="api">API Reference</h1>
-              </div>
-              <p>some text here</p>
-              <p class="pull-right"><a href="#">Back to top</a></p>
-            </div>
-            <div class="section">
-              <div class="page-header">
-                <h1 id="software">Software</h1>
-              </div>
-              <p>some text here</p>
-              <p class="pull-right"><a href="#">Back to top</a></p>
-            </div>
-            <div class="section">
-              <div class="page-header">
-                <h1 id="download">Data Download</h1>
-              </div>
-              <p>some text here</p>
-              <p class="pull-right"><a href="#">Back to top</a></p>
-            </div>
-            <div class="section">
-              <div class="page-header">
-                <h1 id="contact">Contact Information</h1>
-              </div>
-              <p>some text here</p>
-              <p class="pull-right"><a href="#">Back to top</a></p>
-            </div>
+          </aside>
+          <div id="desc" class="col-md-9">
+            {{ project.desc|escape|markdown|safe }}
           </div>
         </div>
+        <section id="pubs">
+          <header class="page-header">
+            <h1>Publications</h1>
+          </header>
+          <ul class="pub-list">
+            {%- for pub in project.pubs %}
+            <li class="pub">
+              <p class="title">{{ pub.title }}</p>
+              <p class="authors">{{ pub.authors }}</p>
+              <p class="publisher">{{ pub.publisher }}</p>
+            </li>
+            {%- endfor %}
+          </ul>
+          <p class="back-to-top"><a href="#">Back to top</a></p>
+        </section>
+        <section id="apps">
+          <header class="page-header">
+            <h1>Applications</h1>
+          </header>
+          <div class="app-group row">
+            {%- for app in project.apps %}
+            <div class="app col-sm-6 col-md-4">
+              <div class="thumbnail">
+                <img src="{{ app.img_url }}" alt="sample" />
+              </div>
+              <h2>{{ app.name }}</h2>
+              <p>{{ app.desc }}</p>
+              <p><a class="btn btn-default" href="{{ app.url }}" role="button">View details »</a></p>
+            </div>
+            {%- endfor %}
+          </div>
+          <p class="back-to-top"><a href="#">Back to top</a></p>
+        </section>
+        <section id="apis">
+          <header class="page-header">
+            <h1>Web APIs</h1>
+          </header>
+          {#- <p>{{ project.api_desc }}</p> #}
+          {%- for api in project.apis %}
+          <section class="subsection">
+            <h1>{{ api.method }} <tt>{{ api.format }}</tt></h1>
+            <table class="api-table table table-striped">
+              <tr>
+                <th>Description</th>
+                <td>{{ api.desc }}</td>
+              </tr>
+              <tr>
+                <th>Parameters</th>
+                <td>
+                  <dl class="param-list">
+                    {%- for param in api.params %}
+                    <dt>param.name</dt>
+                    <dd>param.desc</dd>
+                    {%- endfor %}
+                  </dl>
+                </td>
+              </tr>
+              <tr>
+                <th>Returns</th>
+                <td>{{ api.returns }}</td>
+              </tr>
+              <tr>
+                <th>Example</th>
+                <td>{{ api.example }}</td>
+              </tr>
+            </table>
+          </section>
+          {%- endfor %}
+          <p class="back-to-top"><a href="#">Back to top</a></p>
+        </section>
+        <section id="contact">
+          <header class="page-header">
+            <h1>Contact Information</h1>
+          </header>
+          <p>If you have any questions or comments, please contact with us by email:</p>
+          <ul class="manager-list">
+            {%- for manager in project.managers %}
+            <li class="manager">
+              <p>
+                <span class="name">{{ manager.name }}: </span>
+                <span class="email"><a href="mailto:{{ manager.email }}">{{ manager.email }}</a></span>
+              </p>
+            </li>
+            {%- endfor %}
+          </ul>
+          <p class="back-to-top"><a href="#">Back to top</a></p>
+        </section>
       </div>
 {%- endblock %}

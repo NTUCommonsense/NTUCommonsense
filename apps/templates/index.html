@@ -1,12 +1,10 @@
-{% extends "_base.html" %}
-{% block title %}Welcome{% endblock %}
+{% extends "_layout.html" %}
+{% set page_title = 'Welcome' %}
 {%- block content %}
-      <div class="jumbotron">
+      <header class="jumbotron">
         <div class="container">
           <h1>Welcome</h1>
           <p>some text here</p>
         </div>
-      </div>
-      <div class="container">
-      </div>
+      </header>
 {%- endblock %}
