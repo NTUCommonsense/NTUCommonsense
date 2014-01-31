@@ -1,8 +1,4 @@
 {% set site_title = 'Projects' -%}
-{% set nav_item_list = [
-    ('#', 'some', 'Some Project'),
-    ('#', 'another', 'Another Project')
-] -%}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,9 +29,9 @@
         </div>
         <nav class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            {%- for url, id, caption in nav_item_list %}
+            {%- for id, caption in nav_item_list %}
             <li{% if active_page == id %} class="active"{% endif
-  %}><a href="{{ url }}">{{ caption }}</a></li>
+  %}><a href="/project/{{ id }}">{{ caption }}</a></li>
             {%- endfor %}
           </ul>
           <ul class="nav navbar-nav navbar-right">

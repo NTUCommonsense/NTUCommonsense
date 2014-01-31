@@ -4,7 +4,7 @@ from flask import Flask
 from flask.ext.login import LoginManager
 
 from . import filters
-from .models import db, User
+from .models import db, User, Project
 from .views import module
 
 __all__ = ('create_app',)
@@ -28,6 +28,9 @@ def create_app(name=None, create_db=False):
     db.init_app(app)
     if create_db:
         db.create_all()
+
+    projects = Project.query.with_entities(Project.short_name, Project.name).all()
+    app.jinja_env.globals['nav_item_list'] = projects
 
     login_manager = LoginManager()
     login_manager.init_app(app)
