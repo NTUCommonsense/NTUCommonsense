@@ -9,8 +9,8 @@ __all__ = ('db',)
 db = SQLAlchemy()
 
 project_managers = db.Table('project_managers',
-    db.Column('project_id', db.Integer(), db.ForeignKey('project.id')),
-    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')))
+    db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
 
 
 class _CRUDMixin(object):
@@ -50,9 +50,9 @@ class _CRUDMixin(object):
 class User(_CRUDMixin, UserMixin, db.Model):
     __tablename__ = 'user'
 
-    name = db.Column(db.String(32), unique=True)
-    pwd = db.Column(db.String(256))
-    email = db.Column(db.String(64))
+    email = db.Column(db.String(64), nullable=False, index=True, unique=True)
+    pwd = db.Column(db.String(256), nullable=False)
+    name = db.Column(db.String(32), nullable=False)
 
     @classmethod
     def login(cls, name, pwd):
@@ -66,26 +66,13 @@ class User(_CRUDMixin, UserMixin, db.Model):
         self.pwd = sha256_crypt.encrypt(pwd)
 
 
-class Project(_CRUDMixin, db.Model):
-    __tablename__ = 'project'
-
-    short_name = db.Column(db.String(8), unique=True)
-    name = db.Column(db.String(32))
-    short_desc = db.Column(db.String(128))
-    desc = db.Column(db.Text)
-    update_date = db.Column(db.DateTime, server_default=db.func.now(),
-                            onupdate=db.func.current_timestamp())
-
-    pubs = db.relationship('Publication', backref='project', lazy='dynamic')
-    apps = db.relationship('Application', backref='project', lazy='dynamic')
-    softwares = db.relationship('Software', backref='project', lazy='dynamic')
-    downloads = db.relationship('Download', backref='project', lazy='dynamic')
-    managers = db.relationship('User', secondary=project_managers,
-                               backref='projects', lazy='dynamic')
-
-
 class Publication(_CRUDMixin, db.Model):
     __tablename__ = 'publication'
+
+    title = db.Column(db.String(64), nullable=False)
+    authors = db.Column(db.String(64), nullable=False)
+    publisher = db.Column(db.String(64), nullable=False)
+    date = db.Column(db.Date, nullable=False)
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
@@ -93,11 +80,10 @@ class Publication(_CRUDMixin, db.Model):
 class Application(_CRUDMixin, db.Model):
     __tablename__ = 'application'
 
-    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
-
-
-class Software(_CRUDMixin, db.Model):
-    __tablename__ = 'software'
+    name = db.Column(db.String(32), nullable=False)
+    url = db.Column(db.String(128), nullable=False)
+    img_url = db.Column(db.String(128), nullable=False)
+    desc = db.Column(db.String(128), nullable=False)
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
@@ -105,4 +91,26 @@ class Software(_CRUDMixin, db.Model):
 class Download(_CRUDMixin, db.Model):
     __tablename__ = 'download'
 
+    url = db.Column(db.String(64), nullable=False)
+    name = db.Column(db.String(32), nullable=False)
+
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+
+
+class Project(_CRUDMixin, db.Model):
+    __tablename__ = 'project'
+
+    short_name = db.Column(db.String(16), nullable=False, index=True, unique=True)
+    name = db.Column(db.String(32), nullable=False)
+    short_desc = db.Column(db.String(128), nullable=False)
+    desc = db.Column(db.Text, nullable=False)
+    github_url = db.Column(db.String(128))
+    update_date = db.Column(db.DateTime, nullable=False,
+                            server_default=db.func.now(),
+                            onupdate=db.func.current_timestamp())
+
+    pubs = db.relationship('Publication', backref='project', lazy='dynamic')
+    apps = db.relationship('Application', backref='project', lazy='dynamic')
+    downloads = db.relationship('Download', backref='project', lazy='dynamic')
+    managers = db.relationship('User', secondary=project_managers,
+                               backref='projects', lazy='dynamic')
