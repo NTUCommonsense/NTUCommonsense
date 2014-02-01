@@ -1,6 +1,13 @@
 {% extends "_layout.html" %}
+{% from '_macros.html' import section with context %}
 {% set page_title = project.name %}
 {% set active_page = project.short_name %}
+{% set sections = [
+    ('pubs', 'Publications'),
+    ('apps', 'Applications'),
+    ('apis', 'Web APIs'),
+    ('contact', 'Contact Information')
+] %}
 {%- block content %}
       <header class="jumbotron">
         <div class="container">
@@ -29,102 +36,17 @@
         <div class="row">
           <aside class="aside col-md-3" role="complementary">
             <div class="list-group">
-              <a href="#pubs" class="list-group-item">Publications</a>
-              <a href="#apps" class="list-group-item">Applications</a>
-              <a href="#apis" class="list-group-item">Web APIs</a>
-              <a href="#contact" class="list-group-item">Contact Information</a>
+              {%- for id, caption in sections %}
+              <a href="#{{ id }}" class="list-group-item">{{ caption }}</a>
+              {%- endfor %}
             </div>
           </aside>
           <div id="desc" class="col-md-9">
             {{ project.desc|escape|markdown|safe }}
           </div>
         </div>
-        <section id="pubs">
-          <header class="page-header">
-            <h1>Publications</h1>
-          </header>
-          <ul class="pub-list">
-            {%- for pub in project.pubs %}
-            <li class="pub">
-              <p class="title">{{ pub.title }}</p>
-              <p class="authors">{{ pub.authors }}</p>
-              <p class="publisher">{{ pub.publisher }}</p>
-            </li>
-            {%- endfor %}
-          </ul>
-          <p class="back-to-top"><a href="#">Back to top</a></p>
-        </section>
-        <section id="apps">
-          <header class="page-header">
-            <h1>Applications</h1>
-          </header>
-          <div class="app-group row">
-            {%- for app in project.apps %}
-            <div class="app col-sm-6 col-md-4">
-              <div class="thumbnail">
-                <img src="{{ app.img_url }}" alt="sample">
-              </div>
-              <h2>{{ app.name }}</h2>
-              <p>{{ app.desc }}</p>
-              <p><a class="btn btn-default" href="{{ app.url }}" role="button">View details »</a></p>
-            </div>
-            {%- endfor %}
-          </div>
-          <p class="back-to-top"><a href="#">Back to top</a></p>
-        </section>
-        <section id="apis">
-          <header class="page-header">
-            <h1>Web APIs</h1>
-          </header>
-          {#- <p>{{ project.api_desc }}</p> #}
-          {%- for api in project.apis %}
-          <section class="subsection">
-            <h1>{{ api.method }} <tt>{{ api.format }}</tt></h1>
-            <table class="api-table table table-striped">
-              <tr>
-                <th>Description</th>
-                <td>{{ api.desc }}</td>
-              </tr>
-              <tr>
-                <th>Parameters</th>
-                <td>
-                  <dl class="param-list">
-                    {%- for param in api.params %}
-                    <dt>param.name</dt>
-                    <dd>param.desc</dd>
-                    {%- endfor %}
-                  </dl>
-                </td>
-              </tr>
-              <tr>
-                <th>Returns</th>
-                <td>{{ api.returns }}</td>
-              </tr>
-              <tr>
-                <th>Example</th>
-                <td>{{ api.example }}</td>
-              </tr>
-            </table>
-          </section>
-          {%- endfor %}
-          <p class="back-to-top"><a href="#">Back to top</a></p>
-        </section>
-        <section id="contact">
-          <header class="page-header">
-            <h1>Contact Information</h1>
-          </header>
-          <p>If you have any questions or comments, please contact with us by email:</p>
-          <ul class="manager-list">
-            {%- for manager in project.managers %}
-            <li class="manager">
-              <p>
-                <span class="name">{{ manager.name }}: </span>
-                <span class="email"><a href="mailto:{{ manager.email }}">{{ manager.email }}</a></span>
-              </p>
-            </li>
-            {%- endfor %}
-          </ul>
-          <p class="back-to-top"><a href="#">Back to top</a></p>
-        </section>
+        {%- for id, caption in sections %}
+          {{- section(id, caption) }}
+        {%- endfor %}
       </div>
 {%- endblock %}

@@ -1,0 +1,11 @@
+{%- macro section(id, caption, back_to_top=True) %}
+        <section id="{{ id }}">
+          <header class="page-header">
+            <h1>{{ caption }}</h1>
+          </header>
+          {%- include 'sections/_{}.html'.format(id) %}
+          {%- if back_to_top %}
+          <p class="back-to-top"><a href="#">Back to top</a></p>
+          {%- endif %}
+        </section>
+{%- endmacro %}

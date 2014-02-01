@@ -1,0 +1,11 @@
+          <p>If you have any questions or comments, please contact with us by email:</p>
+          <ul class="manager-list">
+            {%- for manager in project.managers %}
+            <li class="manager">
+              <p>
+                <span class="name">{{ manager.name }}: </span>
+                <span class="email"><a href="mailto:{{ manager.email }}">{{ manager.email }}</a></span>
+              </p>
+            </li>
+            {%- endfor %}
+          </ul>
