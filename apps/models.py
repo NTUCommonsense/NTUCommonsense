@@ -4,7 +4,8 @@ from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 
-__all__ = ('db', 'User', 'Project')
+__all__ = ('db', 'User', 'Publication', 'Application', 'Parameter',
+           'Interface', 'Download', 'Project')
 
 db = SQLAlchemy()
 
@@ -69,10 +70,18 @@ class User(_CRUDMixin, UserMixin, db.Model):
 class Publication(_CRUDMixin, db.Model):
     __tablename__ = 'publication'
 
-    title = db.Column(db.String(64), nullable=False)
-    authors = db.Column(db.String(64), nullable=False)
-    publisher = db.Column(db.String(64), nullable=False)
-    date = db.Column(db.Date, nullable=False)
+    title = db.Column(
+        db.String(64), nullable=False,
+        info={'label': 'Title'})
+    authors = db.Column(
+        db.String(64), nullable=False,
+        info={'label': 'Authors'})
+    publisher = db.Column(
+        db.String(64), nullable=False,
+        info={'label': 'Publisher'})
+    date = db.Column(
+        db.Date, nullable=False,
+        info={'label': 'Publish Date'})
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
@@ -80,10 +89,18 @@ class Publication(_CRUDMixin, db.Model):
 class Application(_CRUDMixin, db.Model):
     __tablename__ = 'application'
 
-    name = db.Column(db.String(32), nullable=False)
-    url = db.Column(db.String(128), nullable=False)
-    img_url = db.Column(db.String(128), nullable=False)
-    desc = db.Column(db.String(128), nullable=False)
+    name = db.Column(
+        db.String(32), nullable=False,
+        info={'label': 'Name'})
+    url = db.Column(
+        db.String(128), nullable=False,
+        info={'label': 'URL'})
+    img_url = db.Column(
+        db.String(128), nullable=False,
+        info={'label': 'Image URL'})
+    desc = db.Column(
+        db.String(128), nullable=False,
+        info={'label': 'Description'})
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
@@ -91,8 +108,12 @@ class Application(_CRUDMixin, db.Model):
 class Parameter(_CRUDMixin, db.Model):
     __tablename__ = 'parameter'
 
-    name = db.Column(db.String(32), nullable=False)
-    desc = db.Column(db.Text, nullable=False)
+    name = db.Column(
+        db.String(32), nullable=False,
+        info={'label': 'Name'})
+    desc = db.Column(
+        db.Text, nullable=False,
+        info={'label': 'Description'})
 
     api_id = db.Column(db.Integer, db.ForeignKey('interface.id'))
 
@@ -100,11 +121,21 @@ class Parameter(_CRUDMixin, db.Model):
 class Interface(_CRUDMixin, db.Model):
     __tablename__ = 'interface'
 
-    method = db.Column(db.Enum('GET', 'POST', 'PUT', 'DELETE'), nullable=False)
-    format = db.Column(db.String(128), nullable=False)
-    desc = db.Column(db.Text, nullable=False)
-    returns = db.Column(db.Text, nullable=False)
-    example = db.Column(db.Text, nullable=False)
+    method = db.Column(
+        db.Enum('GET', 'POST', 'PUT', 'DELETE'), nullable=False,
+        info={'label': 'Method'})
+    format = db.Column(
+        db.String(128), nullable=False,
+        info={'label': 'Format'})
+    desc = db.Column(
+        db.Text, nullable=False,
+        info={'label': 'Description'})
+    returns = db.Column(
+        db.Text, nullable=False,
+        info={'label': 'Returns'})
+    example = db.Column(
+        db.Text, nullable=False,
+        info={'label': 'Example'})
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
@@ -114,8 +145,12 @@ class Interface(_CRUDMixin, db.Model):
 class Download(_CRUDMixin, db.Model):
     __tablename__ = 'download'
 
-    url = db.Column(db.String(64), nullable=False)
-    name = db.Column(db.String(32), nullable=False)
+    url = db.Column(
+        db.String(64), nullable=False,
+        info={'label': 'URL'})
+    name = db.Column(
+        db.String(32), nullable=False,
+        info={'label': 'Name'})
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
@@ -123,15 +158,28 @@ class Download(_CRUDMixin, db.Model):
 class Project(_CRUDMixin, db.Model):
     __tablename__ = 'project'
 
-    short_name = db.Column(db.String(16), nullable=False, index=True, unique=True)
-    name = db.Column(db.String(32), nullable=False)
-    short_desc = db.Column(db.String(128), nullable=False)
-    desc = db.Column(db.Text, nullable=False)
-    api_desc = db.Column(db.Text, nullable=False)
-    github_url = db.Column(db.String(128))
-    update_date = db.Column(db.DateTime, nullable=False,
-                            server_default=db.func.now(),
-                            onupdate=db.func.current_timestamp())
+    short_name = db.Column(
+        db.String(16), nullable=False, index=True, unique=True,
+        info={'label': 'Short Name'})
+    name = db.Column(
+        db.String(32), nullable=False,
+        info={'label': 'Project Name'})
+    short_desc = db.Column(
+        db.String(128), nullable=False,
+        info={'label': 'Short Description'})
+    desc = db.Column(
+        db.Text, nullable=False,
+        info={'label': 'Description'})
+    api_desc = db.Column(
+        db.Text, nullable=False,
+        info={'label': 'API Description'})
+    github_url = db.Column(
+        db.String(128),
+        info={'label': 'GitHub URL'})
+    update_date = db.Column(
+        db.DateTime, nullable=False,
+        server_default=db.func.now(),
+        onupdate=db.func.current_timestamp())
 
     pubs = db.relationship('Publication', lazy='dynamic')
     apps = db.relationship('Application', lazy='dynamic')
