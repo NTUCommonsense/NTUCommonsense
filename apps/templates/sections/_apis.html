@@ -1,4 +1,4 @@
-          {#- <p>{{ project.api_desc }}</p> #}
+          <p>{{ project.api_desc }}</p>
           {%- for api in project.apis %}
           <section class="subsection">
             <h1>{{ api.method }} <tt>{{ api.format }}</tt></h1>
@@ -12,8 +12,8 @@
                 <td>
                   <dl class="param-list">
                     {%- for param in api.params %}
-                    <dt>param.name</dt>
-                    <dd>param.desc</dd>
+                    <dt>{{ param.name }}</dt>
+                    <dd>{{ param.desc }}</dd>
                     {%- endfor %}
                   </dl>
                 </td>

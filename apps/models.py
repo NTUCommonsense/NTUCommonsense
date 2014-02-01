@@ -88,6 +88,29 @@ class Application(_CRUDMixin, db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
 
+class Parameter(_CRUDMixin, db.Model):
+    __tablename__ = 'parameter'
+
+    name = db.Column(db.String(32), nullable=False)
+    desc = db.Column(db.Text, nullable=False)
+
+    api_id = db.Column(db.Integer, db.ForeignKey('interface.id'))
+
+
+class Interface(_CRUDMixin, db.Model):
+    __tablename__ = 'interface'
+
+    method = db.Column(db.Enum('GET', 'POST', 'PUT', 'DELETE'), nullable=False)
+    format = db.Column(db.String(128), nullable=False)
+    desc = db.Column(db.Text, nullable=False)
+    returns = db.Column(db.Text, nullable=False)
+    example = db.Column(db.Text, nullable=False)
+
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+
+    params = db.relationship('Parameter', lazy='dynamic')
+
+
 class Download(_CRUDMixin, db.Model):
     __tablename__ = 'download'
 
@@ -104,6 +127,7 @@ class Project(_CRUDMixin, db.Model):
     name = db.Column(db.String(32), nullable=False)
     short_desc = db.Column(db.String(128), nullable=False)
     desc = db.Column(db.Text, nullable=False)
+    api_desc = db.Column(db.Text, nullable=False)
     github_url = db.Column(db.String(128))
     update_date = db.Column(db.DateTime, nullable=False,
                             server_default=db.func.now(),
@@ -111,5 +135,6 @@ class Project(_CRUDMixin, db.Model):
 
     pubs = db.relationship('Publication', lazy='dynamic')
     apps = db.relationship('Application', lazy='dynamic')
+    apis = db.relationship('Interface', lazy='dynamic')
     downloads = db.relationship('Download', lazy='dynamic')
     managers = db.relationship('User', secondary=project_managers, lazy='dynamic')
