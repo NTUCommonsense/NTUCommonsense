@@ -14,7 +14,7 @@
             <div class="form-group{% if field.errors %} has-error{% endif %}">
               {{ field.label(class_='col-sm-2 control-label') }}
               <div class="col-sm-5">
-                {{ field(class_='form-control', **kwargs) }}
+                {{ field(class_='form-control', required=field.flags.required, **kwargs) }}
               </div>
               {%- if field.errors %}
               <p class="col-sm-5 help-block">{{ field.errors[0] }}</p>

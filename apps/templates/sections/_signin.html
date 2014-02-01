@@ -1,7 +1,7 @@
 {%- from '_macros.html' import form_field %}
           <form class="form-signin form-horizontal" method="post" role="form">
-            {{- form_field(form.email, placeholder=form.email.label.text, required='required', autofocus='autofocus') }}
-            {{- form_field(form.pwd, placeholder=form.pwd.label.text, required='required') }}
+            {{- form_field(form.email, placeholder=form.email.label.text, autofocus=True) }}
+            {{- form_field(form.pwd, placeholder=form.pwd.label.text) }}
             <div class="form-group">
               <div class="checkbox-group col-sm-offset-2 col-sm-10">
                 {{ form.remember }}
