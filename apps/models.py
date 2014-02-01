@@ -109,8 +109,7 @@ class Project(_CRUDMixin, db.Model):
                             server_default=db.func.now(),
                             onupdate=db.func.current_timestamp())
 
-    pubs = db.relationship('Publication', backref='project', lazy='dynamic')
-    apps = db.relationship('Application', backref='project', lazy='dynamic')
-    downloads = db.relationship('Download', backref='project', lazy='dynamic')
-    managers = db.relationship('User', secondary=project_managers,
-                               backref='projects', lazy='dynamic')
+    pubs = db.relationship('Publication', lazy='dynamic')
+    apps = db.relationship('Application', lazy='dynamic')
+    downloads = db.relationship('Download', lazy='dynamic')
+    managers = db.relationship('User', secondary=project_managers, lazy='dynamic')
