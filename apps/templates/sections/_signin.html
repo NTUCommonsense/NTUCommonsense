@@ -1,22 +1,7 @@
+{%- from '_macros.html' import form_field %}
           <form class="form-signin form-horizontal" method="post" role="form">
-            <div class="form-group{% if form.email.errors %} has-error{% endif %}">
-              {{ form.email.label(class_='col-sm-2 control-label') }}
-              <div class="col-sm-5">
-                {{ form.email(class_='form-control', placeholder=form.email.label.text, required='required', autofocus='autofocus') }}
-              </div>
-              {%- if form.email.errors %}
-              <p class="col-sm-5 help-block">{{ form.email.errors[0] }}</p>
-              {%- endif %}
-            </div>
-            <div class="form-group{% if form.pwd.errors %} has-error{% endif %}">
-              {{ form.pwd.label(class_='col-sm-2 control-label') }}
-              <div class="col-sm-5">
-                {{ form.pwd(class_='form-control', placeholder=form.pwd.label.text, required='required') }}
-              </div>
-              {%- if form.pwd.errors %}
-              <p class="col-sm-5 help-block">{{ form.pwd.errors[0] }}</p>
-              {%- endif %}
-            </div>
+            {{- form_field(form.email, placeholder=form.email.label.text, required='required', autofocus='autofocus') }}
+            {{- form_field(form.pwd, placeholder=form.pwd.label.text, required='required') }}
             <div class="form-group">
               <div class="checkbox-group col-sm-offset-2 col-sm-10">
                 {{ form.remember }}
