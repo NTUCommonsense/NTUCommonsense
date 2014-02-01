@@ -12,8 +12,9 @@ footer {
   padding: 20px 0;
 }
 
+header.jumbotron .btn-toolbar,
 header.jumbotron .btn {
-  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 ul.nav li:hover {

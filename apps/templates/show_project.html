@@ -6,7 +6,7 @@
         <div class="container">
           <h1>{{ project.name }}</h1>
           <p>{{ project.short_desc }}</p>
-          <p>
+          <div class="btn-toolbar">
             {%- set downloads = project.downloads|list %}
             {%- set downloads_len = downloads|length %}
             {%- if downloads_len == 1 %}
@@ -22,7 +22,7 @@
             </div>
             {%- endif %}
             <a class="btn btn-default btn-lg" href="{{ project.github_url }}" role="button">Visit Github Page »</a>
-          </p>
+          </div>
         </div>
       </header>
       <div class="container">
