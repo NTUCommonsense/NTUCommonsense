@@ -36,8 +36,12 @@
             {%- endfor %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            {%- if not current_user.is_authenticated() %}
             <li{% if active_page == 'admin' %} class="active"{% endif
   %}><a href="/login">Admin</a></li>
+            {%- else %}
+            <li><a href="/logout">Logout</a></li>
+            {%- endif %}
           </ul>
         </nav>
       </div>
