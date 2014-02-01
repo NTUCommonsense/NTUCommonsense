@@ -20,7 +20,11 @@ def show_project(project):
     if project is None:
         return abort(404)
 
-    return render_template('show_project.html', project=project)
+    sections = [('pubs', 'Publications'),
+                ('apps', 'Applications'),
+                ('apis', 'Web APIs'),
+                ('contact', 'Contact Information')]
+    return render_template('show_project.html', project=project, sections=sections)
 
 
 @module.route('/login', methods=['GET', 'POST'])
