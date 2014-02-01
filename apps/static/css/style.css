@@ -120,6 +120,16 @@ dl.param-list dt:after {
   padding-bottom: 6px;
 }
 
+#signin .checkbox-group {
+  margin-bottom: 15px;
+}
+
+#signin .checkbox-group label {
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0;
+}
+
 @media (min-width: 768px) {
   #desc > p {
     font-size: 21px;

@@ -30,7 +30,7 @@ def login():
 
     form = SigninForm(request.form)
     if form.validate_on_submit():
-        login_user(form.user)
+        login_user(form.user, remember=form.remember.data)
         return redirect(request.args.get('next') or url_for('.index'))
 
     return render_template('signin.html', form=form)

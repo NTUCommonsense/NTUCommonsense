@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask.ext.wtf import Form
-from wtforms.fields import TextField, PasswordField
+from wtforms.fields import TextField, PasswordField, BooleanField
 from wtforms.validators import DataRequired
 
 from .models import User
@@ -10,6 +10,7 @@ from .models import User
 class SigninForm(Form):
     name = TextField('Username', [DataRequired()])
     pwd = PasswordField('Password', [DataRequired()])
+    remember = BooleanField('Remember me')
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
