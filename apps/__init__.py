@@ -9,11 +9,6 @@ from .views import module
 
 __all__ = ('create_app',)
 
-_MODULES = {
-    'projects': '',
-    'admin': '/admin'
-}
-
 
 def _get_projects():
     return Project.query.with_entities(Project.short_name, Project.name).all()
