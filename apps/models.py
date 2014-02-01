@@ -4,7 +4,7 @@ from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 
-__all__ = ('db',)
+__all__ = ('db', 'User', 'Project')
 
 db = SQLAlchemy()
 
@@ -55,8 +55,8 @@ class User(_CRUDMixin, UserMixin, db.Model):
     name = db.Column(db.String(32), nullable=False)
 
     @classmethod
-    def login(cls, name, pwd):
-        user = cls.query.filter_by(name=name).first()
+    def login(cls, email, pwd):
+        user = cls.query.filter_by(email=email).first()
         if user is None or not sha256_crypt.verify(pwd, user.pwd):
             return None
 

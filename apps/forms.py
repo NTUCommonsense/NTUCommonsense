@@ -8,7 +8,7 @@ from .models import User
 
 
 class SigninForm(Form):
-    name = TextField('Username', [DataRequired()])
+    email = TextField('Email Address', [DataRequired()])
     pwd = PasswordField('Password', [DataRequired()])
     remember = BooleanField('Remember me')
 
@@ -21,9 +21,9 @@ class SigninForm(Form):
         if not isvalid:
             return False
 
-        user = User.login(self.name.data, self.pwd.data)
+        user = User.login(self.email.data, self.pwd.data)
         if user is None:
-            self.name.errors.append('Invalid username or password')
+            self.email.errors.append('Invalid username or password')
             return False
 
         self.user = user

@@ -1,11 +1,11 @@
           <form class="form-signin form-horizontal" method="post" role="form">
-            <div class="form-group{% if form.name.errors %} has-error{% endif %}">
-              {{ form.name.label(class_='col-sm-2 control-label') }}
+            <div class="form-group{% if form.email.errors %} has-error{% endif %}">
+              {{ form.email.label(class_='col-sm-2 control-label') }}
               <div class="col-sm-5">
-                {{ form.name(class_='form-control', placeholder=form.name.label.text, required='required', autofocus='autofocus') }}
+                {{ form.email(class_='form-control', placeholder=form.email.label.text, required='required', autofocus='autofocus') }}
               </div>
-              {%- if form.name.errors %}
-              <p class="col-sm-5 help-block">{{ form.name.errors[0] }}</p>
+              {%- if form.email.errors %}
+              <p class="col-sm-5 help-block">{{ form.email.errors[0] }}</p>
               {%- endif %}
             </div>
             <div class="form-group{% if form.pwd.errors %} has-error{% endif %}">
