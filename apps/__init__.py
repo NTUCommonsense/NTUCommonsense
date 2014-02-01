@@ -15,6 +15,10 @@ _MODULES = {
 }
 
 
+def _get_projects():
+    return Project.query.with_entities(Project.short_name, Project.name).all()
+
+
 def create_app(name=None, create_db=False):
     if name is None:
         name = __name__
@@ -29,8 +33,7 @@ def create_app(name=None, create_db=False):
     if create_db:
         db.create_all()
 
-    projects = Project.query.with_entities(Project.short_name, Project.name).all()
-    app.jinja_env.globals['nav_item_list'] = projects
+    app.jinja_env.globals['get_projects'] = _get_projects
 
     login_manager = LoginManager()
     login_manager.init_app(app)
