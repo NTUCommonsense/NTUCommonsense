@@ -1,23 +1,23 @@
-{%- macro section(id, caption, back_to_top=True) %}
-        <section id="{{ id }}">
-          <header class="page-header">
-            <h1>{{ caption }}</h1>
-          </header>
-          {%- include 'sections/_{}.html'.format(id) %}
-          {%- if back_to_top %}
-          <p class="back-to-top"><a href="#">Back to top</a></p>
-          {%- endif %}
-        </section>
-{%- endmacro %}
+{% macro section(id, caption, back_to_top=True) %}
+<section id="{{ id }}">
+  <header class="page-header">
+    <h1>{{ caption }}</h1>
+  </header>
+  {% include 'sections/_{}.html'.format(id) %}
+  {% if back_to_top %}
+  <p class="back-to-top"><a href="#">Back to top</a></p>
+  {% endif %}
+</section>
+{% endmacro %}
 
-{%- macro form_field(field) %}
-            <div class="form-group{% if field.errors %} has-error{% endif %}">
-              {{ field.label(class_='col-sm-2 control-label') }}
-              <div class="col-sm-5">
-                {{ field(class_='form-control', required=field.flags.required, **kwargs) }}
-              </div>
-              {%- if field.errors %}
-              <p class="col-sm-5 help-block">{{ field.errors[0] }}</p>
-              {%- endif %}
-            </div>
-{%- endmacro %}
+{% macro form_field(field) %}
+<div class="form-group{% if field.errors %} has-error{% endif %}">
+  {{ field.label(class_='col-sm-2 control-label') }}
+  <div class="col-sm-5">
+    {{ field(class_='form-control', required=field.flags.required, **kwargs) }}
+  </div>
+  {% if field.errors %}
+  <p class="col-sm-5 help-block">{{ field.errors[0] }}</p>
+  {% endif %}
+</div>
+{% endmacro %}

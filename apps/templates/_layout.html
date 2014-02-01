@@ -1,5 +1,5 @@
-{% set site_title = 'Projects' -%}
-{% set nav_item_list = get_projects() -%}
+{% set site_title = 'Projects' %}
+{% set nav_item_list = get_projects() %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -30,24 +30,22 @@
         </div>
         <nav class="collapse navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
-            {%- for id, caption in nav_item_list %}
-            <li{% if active_page == id %} class="active"{% endif
-  %}><a href="/project/{{ id }}">{{ caption }}</a></li>
-            {%- endfor %}
+            {% for id, caption in nav_item_list %}
+            <li{% if active_page == id %} class="active"{% endif %}><a href="/project/{{ id }}">{{ caption }}</a></li>
+            {% endfor %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            {%- if not current_user.is_authenticated() %}
-            <li{% if active_page == 'admin' %} class="active"{% endif
-  %}><a href="/login">Admin</a></li>
-            {%- else %}
+            {% if not current_user.is_authenticated() %}
+            <li{% if active_page == 'admin' %} class="active"{% endif %}><a href="/login">Admin</a></li>
+            {% else %}
             <li><a href="/logout">Logout</a></li>
-            {%- endif %}
+            {% endif %}
           </ul>
         </nav>
       </div>
     </header>
     <article role="main">
-      {%- block content %}{% endblock %}
+      {% block content %}{% endblock %}
     </article>
     <footer role="contentinfo">
       <p class="container">&copy; 2014 <a href="http://www.agent.csie.ntu.edu.tw/">iAgents Lab.</a></p>

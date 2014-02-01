@@ -1,9 +1,9 @@
-          <ul class="pub-list">
-            {%- for pub in project.pubs %}
-            <li class="pub">
-              <p class="title">{{ pub.title }}</p>
-              <p class="authors">{{ pub.authors }}</p>
-              <p class="publisher">{{ pub.publisher }}</p>
-            </li>
-            {%- endfor %}
-          </ul>
+<ul class="pub-list">
+  {% for pub in project.pubs %}
+  <li class="pub">
+    <p class="title">{{ pub.title }}</p>
+    <p class="authors">{{ pub.authors }}</p>
+    <p class="publisher">{{ pub.publisher }}</p>
+  </li>
+  {% endfor %}
+</ul>

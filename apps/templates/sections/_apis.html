@@ -1,31 +1,31 @@
-          <p>{{ project.api_desc }}</p>
-          {%- for api in project.apis %}
-          <section class="subsection">
-            <h1>{{ api.method }} <tt>{{ api.format }}</tt></h1>
-            <table class="api-table table table-striped">
-              <tr>
-                <th>Description</th>
-                <td>{{ api.desc }}</td>
-              </tr>
-              <tr>
-                <th>Parameters</th>
-                <td>
-                  <dl class="param-list">
-                    {%- for param in api.params %}
-                    <dt>{{ param.name }}</dt>
-                    <dd>{{ param.desc }}</dd>
-                    {%- endfor %}
-                  </dl>
-                </td>
-              </tr>
-              <tr>
-                <th>Returns</th>
-                <td>{{ api.returns }}</td>
-              </tr>
-              <tr>
-                <th>Example</th>
-                <td>{{ api.example }}</td>
-              </tr>
-            </table>
-          </section>
-          {%- endfor %}
+<p>{{ project.api_desc }}</p>
+{% for api in project.apis %}
+<section class="subsection">
+  <h1>{{ api.method }} <tt>{{ api.format }}</tt></h1>
+  <table class="api-table table table-striped">
+    <tr>
+      <th>Description</th>
+      <td>{{ api.desc }}</td>
+    </tr>
+    <tr>
+      <th>Parameters</th>
+      <td>
+        <dl class="param-list">
+          {% for param in api.params %}
+          <dt>{{ param.name }}</dt>
+          <dd>{{ param.desc }}</dd>
+          {% endfor %}
+        </dl>
+      </td>
+    </tr>
+    <tr>
+      <th>Returns</th>
+      <td>{{ api.returns }}</td>
+    </tr>
+    <tr>
+      <th>Example</th>
+      <td>{{ api.example }}</td>
+    </tr>
+  </table>
+</section>
+{% endfor %}

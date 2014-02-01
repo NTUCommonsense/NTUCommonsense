@@ -1,12 +1,12 @@
-          <div class="app-group row">
-            {%- for app in project.apps %}
-            <div class="app col-sm-6 col-md-4">
-              <div class="thumbnail">
-                <img src="{{ app.img_url }}" alt="sample">
-              </div>
-              <h2>{{ app.name }}</h2>
-              <p>{{ app.desc }}</p>
-              <p><a class="btn btn-default" href="{{ app.url }}" role="button">View details »</a></p>
-            </div>
-            {%- endfor %}
-          </div>
+<div class="app-group row">
+  {% for app in project.apps %}
+  <div class="app col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img src="{{ app.img_url }}" alt="sample">
+    </div>
+    <h2>{{ app.name }}</h2>
+    <p>{{ app.desc }}</p>
+    <p><a class="btn btn-default" href="{{ app.url }}" role="button">View details »</a></p>
+  </div>
+  {% endfor %}
+</div>

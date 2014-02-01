@@ -1,15 +1,15 @@
-{%- from '_macros.html' import form_field %}
-          <form class="form-signin form-horizontal" method="post" role="form">
-            {{- form_field(form.email, placeholder=form.email.label.text, autofocus=True) }}
-            {{- form_field(form.pwd, placeholder=form.pwd.label.text) }}
-            <div class="form-group">
-              <div class="checkbox-group col-sm-offset-2 col-sm-10">
-                {{ form.remember }}
-                {{ form.remember.label }}
-              </div>
-              <div class="col-sm-offset-2 col-sm-10">
-                {{ form.csrf_token }}
-                <button class="btn btn-primary" type="submit">Sign in</button>
-              </div>
-            </div>
-          </form>
+{% from '_macros.html' import form_field %}
+<form class="form-signin form-horizontal" method="post" role="form">
+  {{ form_field(form.email, placeholder=form.email.label.text, autofocus=True) }}
+  {{ form_field(form.pwd, placeholder=form.pwd.label.text) }}
+  <div class="form-group">
+    <div class="checkbox-group col-sm-offset-2 col-sm-10">
+      {{ form.remember }}
+      {{ form.remember.label }}
+    </div>
+    <div class="col-sm-offset-2 col-sm-10">
+      {{ form.csrf_token }}
+      <button class="btn btn-primary" type="submit">Sign in</button>
+    </div>
+  </div>
+</form>

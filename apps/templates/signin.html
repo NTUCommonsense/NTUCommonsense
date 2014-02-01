@@ -2,8 +2,8 @@
 {% from '_macros.html' import section with context %}
 {% set page_title = 'Sign in' %}
 {% set active_page = 'admin' %}
-{%- block content %}
-      <div class="container">
-        {{- section('signin', 'Signin', back_to_top=False) }}
-      </div>
-{%- endblock %}
+{% block content %}
+<div class="container">
+  {{ section('signin', 'Signin', back_to_top=False) }}
+</div>
+{% endblock %}
