@@ -1,0 +1,15 @@
+{% from '_macros.html' import form_field, list_form_field %}
+<form class="form-signin form-horizontal" method="post" role="form">
+  {{ form_field(form.name) }}
+  {{ form_field(form.short_name) }}
+  {{ form_field(form.short_desc) }}
+  {{ form_field(form.desc) }}
+  {{ form_field(form.github_url) }}
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      {{ form.csrf_token }}
+      <button class="btn btn-default" type="reset">Reset</button>
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+  </div>
+</form>

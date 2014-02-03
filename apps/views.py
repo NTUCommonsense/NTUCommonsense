@@ -3,7 +3,7 @@
 from flask import Blueprint, request, url_for, redirect, abort, render_template
 from flask.ext.login import current_user, login_user, logout_user, login_required
 
-from .forms import SigninForm
+from .forms import SigninForm, ProjectForm
 from .models import Project
 
 module = Blueprint('projects', __name__)
@@ -25,6 +25,20 @@ def show_project(project):
                 ('apis', 'Web APIs'),
                 ('contact', 'Contact Information')]
     return render_template('show_project.html', project=project, sections=sections)
+
+
+@module.route('/project/<project>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_project(project):
+    project = Project.query.filter_by(short_name=project).first()
+    if project is None:
+        return abort(404)
+
+    form = ProjectForm(request.form, obj=project)
+    if form.validate_on_submit():
+        pass
+
+    return render_template('edit_project.html', form=form, project=project)
 
 
 @module.route('/login', methods=['GET', 'POST'])
