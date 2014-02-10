@@ -23,6 +23,11 @@ def _init_db(app, create_db):
 
 def _init_jinja(app):
     filters.init_app(app)
+
+    app.jinja_env.globals['site_title'] = 'Project'
+    app.jinja_env.globals['description'] = ''
+    app.jinja_env.globals['author'] = ''
+
     app.jinja_env.globals['get_projects'] = _get_projects
 
 
