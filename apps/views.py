@@ -6,7 +6,7 @@ from HTMLMinifier import minify
 
 from .forms import (SigninForm, PublicationForm, ApplicationForm,
                     ParameterForm, InterfaceForm, DownloadForm, ProjectForm)
-from .models import Project
+from .models import Project, Interface
 
 module = Blueprint('projects', __name__)
 
@@ -68,17 +68,38 @@ def edit_item(project, type):
 
     item_id = request.args.get('id')
     Model = Form.Meta.model
-    item = Model.query.filter_by(project_id=project.id, id=item_id).first()
+    item = Model.get(id=item_id)
     if item is None:
+        return abort(404)
+
+    is_valid_item = False
+    if type == 'param':
+        api = Interface.get(item.api_id)
+        is_valid_item = api is not None and api.project_id == project.id
+    else:
+        is_valid_item = item.project_id == project.id
+
+    if not is_valid_item:
         return abort(404)
 
     form = Form(request.form, obj=item)
     if form.validate_on_submit():
         form.populate_obj(item)
         item.save()
-        return redirect(url_for('.edit_project', project=project.short_name))
+        if type == 'param':
+            target = url_for('.edit_item', project=project.short_name,
+                             type='api', id=item.api_id)
+        else:
+            target = url_for('.edit_project', project=project.short_name)
 
-    return _render_template('edit_item.html', form=form, item=item)
+        return redirect(target)
+
+    if type == 'api':
+        return _render_template('edit_apis.html',
+                                form=form, project=project, item=item)
+
+    return _render_template('edit_item.html',
+                            form=form, project=project, item=item)
 
 
 @module.route('/login', methods=['GET', 'POST'])

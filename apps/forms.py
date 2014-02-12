@@ -69,5 +69,5 @@ class DownloadForm(_ModelForm):
 class ProjectForm(_ModelForm):
     class Meta:
         model = Project
-        exclude = ('api_desc', 'update_date')
+        exclude = ('update_date',)
         validators = {'github_url': [URL()]}
