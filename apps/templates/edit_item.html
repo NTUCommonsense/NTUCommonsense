@@ -1,0 +1,9 @@
+{% extends "_layout.html" %}
+{% from '_macros.html' import section with context %}
+{#% set page_title = project.name %#}
+{#% set active_page = project.short_name %#}
+{% block content %}
+<div class="container">
+  {{ section('edit_item', 'Edit', back_to_top=False) }}
+</div>
+{% endblock %}

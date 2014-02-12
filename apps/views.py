@@ -3,10 +3,19 @@
 from flask import Blueprint, request, url_for, redirect, abort, render_template
 from flask.ext.login import current_user, login_user, logout_user, login_required
 
-from .forms import SigninForm, ProjectForm
+from .forms import (SigninForm, PublicationForm, ApplicationForm,
+                    ParameterForm, InterfaceForm, DownloadForm, ProjectForm)
 from .models import Project
 
 module = Blueprint('projects', __name__)
+
+_FORMS = {
+    'pub': PublicationForm,
+    'app': ApplicationForm,
+    'api': InterfaceForm,
+    'param': ParameterForm,
+    'download': DownloadForm
+}
 
 
 @module.route('/')
@@ -36,9 +45,34 @@ def edit_project(project):
 
     form = ProjectForm(request.form, obj=project)
     if form.validate_on_submit():
-        pass
+        form.populate_obj(project)
+        project.save()
+        return redirect(url_for('.edit_project', project=project.short_name))
 
     return render_template('edit_project.html', form=form, project=project)
+
+
+@module.route('/project/<project>/edit/<type>', methods=['GET', 'POST'])
+@login_required
+def edit_item(project, type):
+    project = Project.query.filter_by(short_name=project).first()
+    Form = _FORMS.get(type)
+    if project is None or Form is None:
+        return abort(404)
+
+    item_id = request.args.get('id')
+    Model = Form.Meta.model
+    item = Model.query.filter_by(project_id=project.id, id=item_id).first()
+    if item is None:
+        return abort(404)
+
+    form = Form(request.form, obj=item)
+    if form.validate_on_submit():
+        form.populate_obj(item)
+        item.save()
+        return redirect(url_for('.edit_project', project=project.short_name))
+
+    return render_template('edit_item.html', form=form, item=item)
 
 
 @module.route('/login', methods=['GET', 'POST'])

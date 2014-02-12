@@ -4,6 +4,9 @@
 {% set active_page = project.short_name %}
 {% block content %}
 <div class="container">
-  {{ section('edit_basic', 'Basic Settings', back_to_top=False) }}
+  {{ section('edit_item', 'Basic Settings') }}
+  {{ section('edit_pubs', 'Publications') }}
+  {{ section('edit_apps', 'Applications') }}
+  {{ section('edit_downloads', 'Downloads') }}
 </div>
 {% endblock %}

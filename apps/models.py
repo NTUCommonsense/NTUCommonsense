@@ -158,12 +158,12 @@ class Download(_CRUDMixin, db.Model):
 class Project(_CRUDMixin, db.Model):
     __tablename__ = 'project'
 
-    short_name = db.Column(
-        db.String(16), nullable=False, index=True, unique=True,
-        info={'label': 'Short Name'})
     name = db.Column(
         db.String(32), nullable=False,
         info={'label': 'Project Name'})
+    short_name = db.Column(
+        db.String(16), nullable=False, index=True, unique=True,
+        info={'label': 'Short Name'})
     short_desc = db.Column(
         db.String(128), nullable=False,
         info={'label': 'Short Description'})

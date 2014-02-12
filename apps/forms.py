@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from flask.ext.wtf import Form
-from wtforms.fields import TextField, PasswordField, BooleanField, FormField
+from wtforms.fields import TextField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, URL
-from wtforms_alchemy import model_form_factory, ModelFieldList
+from wtforms_alchemy import model_form_factory
 
 from .models import (db, User, Publication, Application, Parameter, Interface,
                      Download, Project)
@@ -59,8 +59,6 @@ class InterfaceForm(_ModelForm):
     class Meta:
         model = Interface
 
-    params = ModelFieldList(FormField(ParameterForm))
-
 
 class DownloadForm(_ModelForm):
     class Meta:
@@ -71,5 +69,5 @@ class DownloadForm(_ModelForm):
 class ProjectForm(_ModelForm):
     class Meta:
         model = Project
-        exclude = ('api_desc',)
+        exclude = ('api_desc', 'update_date')
         validators = {'github_url': [URL()]}
