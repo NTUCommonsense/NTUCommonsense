@@ -2,6 +2,7 @@
 
 from flask import Blueprint, request, url_for, redirect, abort, render_template
 from flask.ext.login import current_user, login_user, logout_user, login_required
+from HTMLMinifier import minify
 
 from .forms import (SigninForm, PublicationForm, ApplicationForm,
                     ParameterForm, InterfaceForm, DownloadForm, ProjectForm)
@@ -18,9 +19,14 @@ _FORMS = {
 }
 
 
+def _render_template(*args, **kwargs):
+    html = render_template(*args, **kwargs)
+    return minify(html)
+
+
 @module.route('/')
 def index():
-    return render_template('index.html')
+    return _render_template('index.html')
 
 
 @module.route('/project/<project>')
@@ -33,7 +39,7 @@ def show_project(project):
                 ('apps', 'Applications'),
                 ('apis', 'Web APIs'),
                 ('contact', 'Contact Information')]
-    return render_template('show_project.html', project=project, sections=sections)
+    return _render_template('show_project.html', project=project, sections=sections)
 
 
 @module.route('/project/<project>/edit', methods=['GET', 'POST'])
@@ -49,7 +55,7 @@ def edit_project(project):
         project.save()
         return redirect(url_for('.edit_project', project=project.short_name))
 
-    return render_template('edit_project.html', form=form, project=project)
+    return _render_template('edit_project.html', form=form, project=project)
 
 
 @module.route('/project/<project>/edit/<type>', methods=['GET', 'POST'])
@@ -72,7 +78,7 @@ def edit_item(project, type):
         item.save()
         return redirect(url_for('.edit_project', project=project.short_name))
 
-    return render_template('edit_item.html', form=form, item=item)
+    return _render_template('edit_item.html', form=form, item=item)
 
 
 @module.route('/login', methods=['GET', 'POST'])
@@ -85,7 +91,7 @@ def login():
         login_user(form.user, remember=form.remember.data)
         return redirect(request.args.get('next') or url_for('.index'))
 
-    return render_template('signin.html', form=form)
+    return _render_template('signin.html', form=form)
 
 
 @module.route('/logout')

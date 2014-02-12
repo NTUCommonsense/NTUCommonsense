@@ -4,4 +4,5 @@ Flask-WTF
 Flask-Login
 WTForms-Alchemy
 Markdown
+HTMLMinifier
 passlib

@@ -14,7 +14,7 @@
       <a class="btn btn-primary btn-lg" href="{{ downloads[0].url }}" role="button">Download Data</a>
       {% elif downloads_len > 1 %}
       <div class="btn-group">
-        <button class="btn btn-primary btn-lg dropdown-toggle" role="button" data-toggle="dropdown">Download Data <span class="caret"></span></button>
+        <button class="btn btn-primary btn-lg dropdown-toggle" role="button" data-toggle="dropdown">Download Data&nbsp;<span class="caret"></span></button>
         <ul class="dropdown-menu">
           {% for download in downloads %}
           <li><a href="{{ download.url }}">{{ download.name }}</a></li>
