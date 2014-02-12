@@ -66,21 +66,32 @@ def edit_item(project, type):
     if project is None or Form is None:
         return abort(404)
 
-    item_id = request.args.get('id')
     Model = Form.Meta.model
-    item = Model.get(id=item_id)
-    if item is None:
-        return abort(404)
+    item_id = request.args.get('id')
+    if item_id is None:
+        if type == 'param':
+            api_id = request.args.get('api_id')
+            api = Interface.get(api_id)
+            if api is None or api.project_id != project.id:
+                return abort(404)
 
-    is_valid_item = False
-    if type == 'param':
-        api = Interface.get(item.api_id)
-        is_valid_item = api is not None and api.project_id == project.id
+            item = Model(api_id=api_id)
+        else:
+            item = Model(project_id=project.id)
     else:
-        is_valid_item = item.project_id == project.id
+        item = Model.get(id=item_id)
+        if item is None:
+            return abort(404)
 
-    if not is_valid_item:
-        return abort(404)
+        is_valid_item = False
+        if type == 'param':
+            api = Interface.get(item.api_id)
+            is_valid_item = api is not None and api.project_id == project.id
+        else:
+            is_valid_item = item.project_id == project.id
+
+        if not is_valid_item:
+            return abort(404)
 
     form = Form(request.form, obj=item)
     if form.validate_on_submit():
