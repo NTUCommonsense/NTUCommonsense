@@ -109,7 +109,7 @@ def edit_item(project, type):
         return _render_template('edit_apis.html',
                                 form=form, project=project, item=item)
 
-    return _render_template('edit_item.html',
+    return _render_template('edit_item.html', name=Model.__name__,
                             form=form, project=project, item=item)
 
 
