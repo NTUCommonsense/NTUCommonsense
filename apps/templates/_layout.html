@@ -30,7 +30,7 @@
         <nav class="collapse navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
             {% for id, caption in nav_item_list %}
-            <li{% if active_page == id %} class="active"{% endif %}><a href="/project/{{ id }}">{{ caption }}</a></li>
+            <li{% if active_page == id %} class="active"{% endif %}><a href="{{ url_for('.show_project', project=id) }}">{{ caption }}</a></li>
             {% endfor %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
