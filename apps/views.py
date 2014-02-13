@@ -49,6 +49,9 @@ def edit_project(project):
     if project is None:
         return abort(404)
 
+    if current_user not in project.managers:
+        return abort(403)
+
     form = ProjectForm(request.form, obj=project)
     if form.validate_on_submit():
         form.populate_obj(project)
@@ -65,6 +68,9 @@ def edit_item(project, type):
     Form = _FORMS.get(type)
     if project is None or Form is None:
         return abort(404)
+
+    if current_user not in project.managers:
+        return abort(403)
 
     Model = Form.Meta.model
     item_id = request.args.get('id')
