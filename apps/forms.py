@@ -46,9 +46,8 @@ class UserForm(_ModelForm):
         model = User
         exclude = ('pwd',)
 
-    projects = QuerySelectMultipleField('Projects', [DataRequired()],
-                                        query_factory=_get_projects,
-                                        get_label='name')
+    projects = QuerySelectMultipleField('Projects', get_label='name',
+                                        query_factory=_get_projects)
 
 
 class PublicationForm(_ModelForm):

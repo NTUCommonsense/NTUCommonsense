@@ -135,7 +135,8 @@ def edit_user(user_id):
     form = UserForm(request.form, obj=user)
     if form.validate_on_submit():
         if not current_user.is_admin:
-            form.is_admin.data = False
+            form.projects.data = user.projects
+            form.is_admin.data = user.is_admin
         elif current_user.id == user_id:
             form.is_admin.data = True
 
