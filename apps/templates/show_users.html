@@ -1,0 +1,9 @@
+{% extends "_layout.html" %}
+{% from '_macros.html' import section with context %}
+{% set page_title = 'Manage Users' %}
+{% set active_page = 'manage' %}
+{% block content %}
+<div class="container">
+  {{ section('show_users', 'Users', back_to_top=False) }}
+</div>
+{% endblock %}
