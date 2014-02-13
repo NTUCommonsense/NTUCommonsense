@@ -120,11 +120,11 @@ dl.param-list dt:after {
   padding-bottom: 6px;
 }
 
-#signin .checkbox-group {
+form .checkbox-group {
   margin-bottom: 15px;
 }
 
-#signin .checkbox-group label {
+form .checkbox-group label {
   font-size: 14px;
   font-weight: normal;
   padding: 0;
