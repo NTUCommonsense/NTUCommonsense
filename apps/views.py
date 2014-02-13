@@ -24,6 +24,45 @@ def _render_template(*args, **kwargs):
     return minify(html)
 
 
+def _create_project_item(Model, project):
+    if type == 'param':
+        api_id = request.args.get('api_id')
+        api = Interface.get(api_id)
+        if api is None or api.project_id != project.id:
+            return abort(404)
+
+        item = Model(api_id=api_id)
+    else:
+        item = Model(project_id=project.id)
+
+    return item
+
+
+def _get_project_item(Model, project, item_id):
+    item = Model.get(id=item_id)
+    if item is None:
+        return None
+
+    is_valid_item = False
+    if type == 'param':
+        api = Interface.get(item.api_id)
+        is_valid_item = api is not None and api.project_id == project.id
+    else:
+        is_valid_item = item.project_id == project.id
+
+    return item if is_valid_item else None
+
+
+def _get_page_after_action(project, item):
+    if type == 'param':
+        target = url_for('.edit_item', project=project.short_name,
+                         type='api', id=item.api_id)
+    else:
+        target = url_for('.edit_project', project=project.short_name)
+
+    return target
+
+
 @module.route('/')
 def index():
     return _render_template('index.html')
@@ -75,40 +114,18 @@ def edit_item(project, type):
     Model = Form.Meta.model
     item_id = request.args.get('id')
     if item_id is None:
-        if type == 'param':
-            api_id = request.args.get('api_id')
-            api = Interface.get(api_id)
-            if api is None or api.project_id != project.id:
-                return abort(404)
-
-            item = Model(api_id=api_id)
-        else:
-            item = Model(project_id=project.id)
+        item = _create_project_item(Model, project)
     else:
-        item = Model.get(id=item_id)
+        item = _get_project_item(Model, project, item_id)
         if item is None:
-            return abort(404)
-
-        is_valid_item = False
-        if type == 'param':
-            api = Interface.get(item.api_id)
-            is_valid_item = api is not None and api.project_id == project.id
-        else:
-            is_valid_item = item.project_id == project.id
-
-        if not is_valid_item:
             return abort(404)
 
     form = Form(request.form, obj=item)
     if form.validate_on_submit():
         form.populate_obj(item)
         item.save()
-        if type == 'param':
-            target = url_for('.edit_item', project=project.short_name,
-                             type='api', id=item.api_id)
-        else:
-            target = url_for('.edit_project', project=project.short_name)
 
+        target = _get_page_after_action(project, item)
         return redirect(target)
 
     if type == 'api':
@@ -117,6 +134,36 @@ def edit_item(project, type):
 
     return _render_template('edit_item.html', name=Model.__name__,
                             form=form, project=project, item=item)
+
+
+@module.route('/project/<project>/delete/<type>')
+@login_required
+def delete_item(project, type):
+    project = Project.query.filter_by(short_name=project).first()
+    if project is None:
+        return abort(404)
+
+    if current_user not in project.managers:
+        return abort(403)
+
+    item_id = request.args.get('id')
+    if item_id is None:
+        return abort(404)
+
+    Form = _FORMS.get(type)
+    Model = Form.Meta.model
+    item = _get_project_item(Model, project, item_id)
+    if item is None:
+        return abort(404)
+
+    if request.args.get('confirmed'):
+        item.delete()
+
+        target = _get_page_after_action(project, item)
+        return redirect(target)
+
+    return _render_template('delete_item.html', name=Model.__name__,
+                            project=project, item=item)
 
 
 @module.route('/users')

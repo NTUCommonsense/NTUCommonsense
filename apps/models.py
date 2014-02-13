@@ -95,6 +95,9 @@ class Publication(_CRUDMixin, db.Model):
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
+    def __str__(self):
+        return self.title
+
 
 class Application(_CRUDMixin, db.Model):
     __tablename__ = 'application'
@@ -114,6 +117,9 @@ class Application(_CRUDMixin, db.Model):
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
+    def __str__(self):
+        return self.name
+
 
 class Parameter(_CRUDMixin, db.Model):
     __tablename__ = 'parameter'
@@ -126,6 +132,9 @@ class Parameter(_CRUDMixin, db.Model):
         info={'label': 'Description'})
 
     api_id = db.Column(db.Integer, db.ForeignKey('interface.id'))
+
+    def __str__(self):
+        return self.name
 
 
 class Interface(_CRUDMixin, db.Model):
@@ -151,6 +160,9 @@ class Interface(_CRUDMixin, db.Model):
 
     params = db.relationship('Parameter', lazy='dynamic')
 
+    def __str__(self):
+        return self.format
+
 
 class Download(_CRUDMixin, db.Model):
     __tablename__ = 'download'
@@ -163,6 +175,9 @@ class Download(_CRUDMixin, db.Model):
         info={'label': 'Name'})
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+
+    def __str__(self):
+        return self.name
 
 
 class Project(_CRUDMixin, db.Model):
