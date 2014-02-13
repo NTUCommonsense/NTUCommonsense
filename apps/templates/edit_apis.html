@@ -4,6 +4,15 @@
 {% set active_page = project.short_name %}
 {% block content %}
 <div class="container">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-success">
+    <p>{{ message }}</p>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
   {{ section('edit_item', 'Edit Web API') }}
   {{ section('edit_params', 'Parameters') }}
 </div>

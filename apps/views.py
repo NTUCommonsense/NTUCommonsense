@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, request, url_for, redirect, abort, render_template
-from flask.ext.login import current_user, login_user, logout_user, login_required
+from flask import (Blueprint, request, url_for, redirect, abort, flash,
+                   render_template)
+from flask.ext.login import (current_user, login_user, logout_user,
+                             login_required)
 from HTMLMinifier import minify
 
 from .forms import (SigninForm, UserForm, PublicationForm, ApplicationForm,
@@ -24,7 +26,7 @@ def _render_template(*args, **kwargs):
     return minify(html)
 
 
-def _create_project_item(Model, project):
+def _create_project_item(Model, type, project):
     if type == 'param':
         api_id = request.args.get('api_id')
         api = Interface.get(api_id)
@@ -38,7 +40,7 @@ def _create_project_item(Model, project):
     return item
 
 
-def _get_project_item(Model, project, item_id):
+def _get_project_item(Model, type, project, item_id):
     item = Model.get(id=item_id)
     if item is None:
         return None
@@ -53,7 +55,7 @@ def _get_project_item(Model, project, item_id):
     return item if is_valid_item else None
 
 
-def _get_page_after_action(project, item):
+def _get_page_after_action(type, project, item):
     if type == 'param':
         target = url_for('.edit_item', project=project.short_name,
                          type='api', id=item.api_id)
@@ -78,7 +80,8 @@ def show_project(project):
                 ('apps', 'Applications'),
                 ('apis', 'Web APIs'),
                 ('contact', 'Contact Information')]
-    return _render_template('show_project.html', project=project, sections=sections)
+    return _render_template('show_project.html',
+                            project=project, sections=sections)
 
 
 @module.route('/project/<project>/edit', methods=['GET', 'POST'])
@@ -95,6 +98,8 @@ def edit_project(project):
     if form.validate_on_submit():
         form.populate_obj(project)
         project.save()
+
+        flash('Project infromation was successfully updated.')
         return redirect(url_for('.edit_project', project=project.short_name))
 
     return _render_template('edit_project.html', form=form, project=project)
@@ -114,9 +119,9 @@ def edit_item(project, type):
     Model = Form.Meta.model
     item_id = request.args.get('id')
     if item_id is None:
-        item = _create_project_item(Model, project)
+        item = _create_project_item(Model, type, project)
     else:
-        item = _get_project_item(Model, project, item_id)
+        item = _get_project_item(Model, type, project, item_id)
         if item is None:
             return abort(404)
 
@@ -125,7 +130,8 @@ def edit_item(project, type):
         form.populate_obj(item)
         item.save()
 
-        target = _get_page_after_action(project, item)
+        flash('{0} was successfully updated.'.format(Model.__name__))
+        target = _get_page_after_action(type, project, item)
         return redirect(target)
 
     if type == 'api':
@@ -152,14 +158,15 @@ def delete_item(project, type):
 
     Form = _FORMS.get(type)
     Model = Form.Meta.model
-    item = _get_project_item(Model, project, item_id)
+    item = _get_project_item(Model, type, project, item_id)
     if item is None:
         return abort(404)
 
     if request.args.get('confirmed'):
         item.delete()
 
-        target = _get_page_after_action(project, item)
+        flash('{0} was successfully deleted.'.format(Model.__name__))
+        target = _get_page_after_action(type, project, item)
         return redirect(target)
 
     return _render_template('delete_item.html', name=Model.__name__,
@@ -195,6 +202,8 @@ def edit_user(user_id):
 
         form.populate_obj(user)
         user.save()
+
+        flash('User information was successfully updated.')
         return _render_template('edit_user.html', form=form)
 
     return _render_template('edit_user.html', form=form)
