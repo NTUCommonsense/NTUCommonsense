@@ -37,7 +37,7 @@
             {% if not current_user.is_authenticated() %}
             <li{% if active_page == 'admin' %} class="active"{% endif %}><a href="{{ url_for('.login') }}">Login</a></li>
             {% else %}
-            <li{% if active_page == 'edit_user' %} class="active"{% endif %}><a href="{{ url_for('.edit_user', user_id=current_user.id) }}">{{ current_user.name }}</a></li>
+            <li{% if active_page == 'manage' %} class="active"{% endif %}><a href="{% if current_user.is_admin %}{{ url_for('.show_users') }}{% else %}{{ url_for('.edit_user', user_id=current_user.id) }}{% endif %}">Manage</a></li>
             <li><a href="{{ url_for('.logout') }}">Logout</a></li>
             {% endif %}
           </ul>

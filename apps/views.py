@@ -113,6 +113,15 @@ def edit_item(project, type):
                             form=form, project=project, item=item)
 
 
+@module.route('/users')
+@login_required
+def show_users():
+    if not current_user.is_admin:
+        return abort(403)
+
+    return _render_template('show_users.html', users=User.query.all())
+
+
 @module.route('/user/<int:user_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_user(user_id):
