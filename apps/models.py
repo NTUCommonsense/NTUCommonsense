@@ -9,7 +9,8 @@ __all__ = ('db', 'User', 'Publication', 'Application', 'Parameter',
 
 db = SQLAlchemy()
 
-project_managers = db.Table('project_managers',
+project_managers = db.Table(
+    'project_managers',
     db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
 
@@ -51,9 +52,18 @@ class _CRUDMixin(object):
 class User(_CRUDMixin, UserMixin, db.Model):
     __tablename__ = 'user'
 
-    email = db.Column(db.String(64), nullable=False, index=True, unique=True)
-    pwd = db.Column(db.String(256), nullable=False)
-    name = db.Column(db.String(32), nullable=False)
+    email = db.Column(
+        db.String(64), nullable=False, index=True, unique=True,
+        info={'label': 'Email'})
+    pwd = db.Column(
+        db.String(256), nullable=False,
+        info={'label': 'Password'})
+    name = db.Column(
+        db.String(32), nullable=False,
+        info={'label': 'Name'})
+    is_admin = db.Column(
+        db.Boolean, default=False, nullable=False,
+        info={'label': 'Admin'})
 
     @classmethod
     def login(cls, email, pwd):
@@ -185,4 +195,5 @@ class Project(_CRUDMixin, db.Model):
     apps = db.relationship('Application', lazy='dynamic')
     apis = db.relationship('Interface', lazy='dynamic')
     downloads = db.relationship('Download', lazy='dynamic')
-    managers = db.relationship('User', secondary=project_managers, lazy='dynamic')
+    managers = db.relationship('User', secondary=project_managers,
+                               backref='projects', lazy='dynamic')

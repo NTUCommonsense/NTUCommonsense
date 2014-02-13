@@ -4,9 +4,9 @@ from flask import Blueprint, request, url_for, redirect, abort, render_template
 from flask.ext.login import current_user, login_user, logout_user, login_required
 from HTMLMinifier import minify
 
-from .forms import (SigninForm, PublicationForm, ApplicationForm,
+from .forms import (SigninForm, UserForm, PublicationForm, ApplicationForm,
                     ParameterForm, InterfaceForm, DownloadForm, ProjectForm)
-from .models import Project, Interface
+from .models import User, Project, Interface
 
 module = Blueprint('projects', __name__)
 
@@ -111,6 +111,30 @@ def edit_item(project, type):
 
     return _render_template('edit_item.html', name=Model.__name__,
                             form=form, project=project, item=item)
+
+
+@module.route('/user/<int:user_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_user(user_id):
+    if not current_user.is_admin and current_user.id != user_id:
+        return abort(403)
+
+    user = User.get(user_id)
+    if user is None:
+        return abort(404)
+
+    form = UserForm(request.form, obj=user)
+    if form.validate_on_submit():
+        if not current_user.is_admin:
+            form.is_admin.data = False
+        elif current_user.id == user_id:
+            form.is_admin.data = True
+
+        form.populate_obj(user)
+        user.save()
+        return _render_template('edit_user.html', form=form)
+
+    return _render_template('edit_user.html', form=form)
 
 
 @module.route('/login', methods=['GET', 'POST'])
