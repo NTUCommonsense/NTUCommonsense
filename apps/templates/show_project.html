@@ -1,5 +1,5 @@
 {% extends "_layout.html" %}
-{% from '_macros.html' import section with context %}
+{% from '_macros.html' import section_from_template with context %}
 {% set page_title = project.name %}
 {% set active_page = project.short_name %}
 {% block content %}
@@ -40,7 +40,7 @@
     </div>
   </div>
   {% for id, caption in sections %}
-    {{ section(id, caption) }}
+    {{ section_from_template(id, caption) }}
   {% endfor %}
 </div>
 {% endblock %}

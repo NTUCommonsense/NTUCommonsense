@@ -1,9 +1,12 @@
 {% extends "_layout.html" %}
-{% from '_macros.html' import section with context %}
+{% from '_macros.html' import section %}
 {% set page_title = project.name %}
 {% set active_page = project.short_name %}
 {% block content %}
 <div class="container">
-  {{ section('delete_item', 'Delete ' + name, back_to_top=False) }}
+  {% call section('delete_item', 'Delete ' + name, back_to_top=False) %}
+  <p>{{ item }}</p>
+  <p><a href="{{ url_for(request.endpoint, id=request.args.get('id'), confirmed=True, **request.view_args) }}" class="btn btn-danger" role="button">Delete it!</a></p>
+  {% endcall %}
 </div>
 {% endblock %}
