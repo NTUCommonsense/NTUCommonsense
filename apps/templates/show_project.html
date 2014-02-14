@@ -7,7 +7,12 @@
 {% block main %}
 <header class="jumbotron">
   <div class="container">
-    <h1>{{ project.name }}</h1>
+    <h1>
+      {{ project.name }}
+      {% if current_user in project.managers %}
+      <a id="edit-link" title="Edit this project" href="{{ url_for('.edit_project', project=project.short_name) }}"><span class="glyphicon glyphicon-pencil"></span></a>
+      {% endif %}
+    </h1>
     <p>{{ project.short_desc }}</p>
     <div class="btn-toolbar">
       {% set downloads = project.downloads|list %}

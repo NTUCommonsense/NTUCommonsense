@@ -29,6 +29,11 @@ article {
   font-size: 16px;
 }
 
+#edit-link {
+  font-size: 24px;
+  margin: 0 15px;
+}
+
 section {
   padding-top: 40px;
 }
