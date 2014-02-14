@@ -1,4 +1,4 @@
-<p>{{ project.api_desc }}</p>
+{{ project.api_desc|escape|markdown|safe }}
 {% for api in project.apis %}
 <section class="subsection">
   <h1>{{ api.method }} <tt>{{ api.format }}</tt></h1>
