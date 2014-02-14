@@ -1,14 +1,9 @@
-{% extends "_layout.html" %}
-{% from '_macros.html' import section, editing_section, editing_form, show_messages %}
-{% set page_title = project.name %}
-{% set active_page = project.short_name %}
+{% extends '_edit_project.html' %}
 {% block content %}
-<div class="container">
   {{ show_messages('success') }}
   {% call section('basic', 'Edit Web API') %}
     {{ editing_form(form) }}
   {% endcall %}
   {{ editing_section('param', 'Parameters',
                      project.short_name, item.params, api_id=item.id) }}
-</div>
 {% endblock %}

@@ -5,7 +5,7 @@
   <table class="api-table table table-striped">
     <tr>
       <th>Description</th>
-      <td>{{ api.desc }}</td>
+      <td>{{ api.desc|escape|markdown|safe }}</td>
     </tr>
     <tr>
       <th>Parameters</th>
@@ -13,18 +13,18 @@
         <dl class="param-list">
           {% for param in api.params %}
           <dt>{{ param.name }}</dt>
-          <dd>{{ param.desc }}</dd>
+          <dd>{{ param.desc|escape|markdown|safe }}</dd>
           {% endfor %}
         </dl>
       </td>
     </tr>
     <tr>
       <th>Returns</th>
-      <td>{{ api.returns }}</td>
+      <td>{{ api.returns|escape|markdown|safe }}</td>
     </tr>
     <tr>
       <th>Example</th>
-      <td>{{ api.example }}</td>
+      <td>{{ api.example|escape|markdown|safe }}</td>
     </tr>
   </table>
 </section>

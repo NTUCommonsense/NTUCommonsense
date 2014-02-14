@@ -1,9 +1,10 @@
-{% extends "_layout.html" %}
-{% from '_macros.html' import section, form_field %}
+{% extends '_layout.html' %}
+{% from '_macros.html' import section, form_field, show_messages %}
 {% set page_title = current_user.name %}
 {% set active_page = 'manage' %}
-{% block content %}
+{% block main %}
 <div class="container">
+  {{ show_messages('success') }}
   {% call section('edit_user', 'Edit User', back_to_top=False) %}
   <form class="form-horizontal" method="post" role="form">
     {{ form_field(form.name) }}

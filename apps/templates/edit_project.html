@@ -1,9 +1,5 @@
-{% extends "_layout.html" %}
-{% from '_macros.html' import section, editing_section, editing_form, show_messages %}
-{% set page_title = project.name %}
-{% set active_page = project.short_name %}
+{% extends '_edit_project.html' %}
 {% block content %}
-<div class="container">
   {{ show_messages('success') }}
   {% call section('basic', 'Basic Settings') %}
     {{ editing_form(form) }}
@@ -16,5 +12,4 @@
                      project.short_name, project.apis) }}
   {{ editing_section('download', 'Downloads',
                      project.short_name, project.downloads) }}
-</div>
 {% endblock %}

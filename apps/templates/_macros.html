@@ -10,7 +10,7 @@
 </section>
 {% endmacro %}
 
-{% macro section_from_template(id, dir, caption, back_to_top=True) %}
+{% macro section_from_template(id, caption, back_to_top=True) %}
 {% call section(id, caption, back_to_top) %}
   {% include 'sections/_{0}.html'.format(id) %}
 {% endcall %}

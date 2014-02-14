@@ -1,11 +1,6 @@
-{% extends "_layout.html" %}
-{% from '_macros.html' import section, editing_form %}
-{% set page_title = project.name %}
-{% set active_page = project.short_name %}
+{% extends '_edit_project.html' %}
 {% block content %}
-<div class="container">
   {% call section('basic', 'Edit ' + name, back_to_top=False) %}
     {{ editing_form(form) }}
   {% endcall %}
-</div>
 {% endblock %}

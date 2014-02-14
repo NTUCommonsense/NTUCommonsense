@@ -1,12 +1,12 @@
-{% extends "_layout.html" %}
+{% extends '_layout.html' %}
 {% from '_macros.html' import section, form_field, show_messages %}
-{% set page_title = 'Sign in' %}
-{% set active_page = 'admin' %}
-{% block content %}
+{% set page_title = 'Sign In' %}
+{% set active_page = 'signin' %}
+{% block main %}
 <div class="container">
   {{ show_messages('info') }}
-  {% call section('signin', 'Signin', back_to_top=False) %}
-  <form class="form-signin form-horizontal" method="post" role="form">
+  {% call section('signin', 'Sign In', back_to_top=False) %}
+  <form class="form-horizontal" method="post" role="form">
     {{ form_field(form.email, placeholder=form.email.label.text, autofocus=True) }}
     {{ form_field(form.pwd, placeholder=form.pwd.label.text) }}
     <div class="form-group">
@@ -16,7 +16,7 @@
       </div>
       <div class="col-sm-offset-2 col-sm-10">
         {{ form.csrf_token }}
-        <button class="btn btn-primary" type="submit">Sign in</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
       </div>
     </div>
   </form>
