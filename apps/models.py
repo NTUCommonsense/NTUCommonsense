@@ -53,7 +53,7 @@ class User(_CRUDMixin, UserMixin, db.Model):
     __tablename__ = 'user'
 
     email = db.Column(
-        db.String(64), nullable=False, index=True, unique=True,
+        db.String(128), nullable=False, index=True, unique=True,
         info={'label': 'Email'})
     pwd = db.Column(
         db.String(256), nullable=False,
@@ -81,13 +81,13 @@ class Publication(_CRUDMixin, db.Model):
     __tablename__ = 'publication'
 
     title = db.Column(
-        db.String(64), nullable=False,
+        db.String(128), nullable=False,
         info={'label': 'Title'})
     authors = db.Column(
-        db.String(64), nullable=False,
+        db.String(128), nullable=False,
         info={'label': 'Authors'})
     publisher = db.Column(
-        db.String(64), nullable=False,
+        db.String(128), nullable=False,
         info={'label': 'Publisher'})
     date = db.Column(
         db.Date, nullable=False,
@@ -112,7 +112,7 @@ class Application(_CRUDMixin, db.Model):
         db.String(128), nullable=False,
         info={'label': 'Image URL'})
     desc = db.Column(
-        db.String(128), nullable=False,
+        db.Text, nullable=False,
         info={'label': 'Description'})
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
@@ -168,7 +168,7 @@ class Download(_CRUDMixin, db.Model):
     __tablename__ = 'download'
 
     url = db.Column(
-        db.String(64), nullable=False,
+        db.String(128), nullable=False,
         info={'label': 'URL'})
     name = db.Column(
         db.String(32), nullable=False,
