@@ -1,6 +1,10 @@
 {% extends '_layout.html' %}
 {% from '_macros.html' import section, form_field, show_messages %}
-{% set page_title = current_user.name %}
+{% if form.raw_pwd is defined %}
+  {% set page_title = 'Create User' %}
+{% else %}
+  {% set page_title = 'Edit User - ' + form.name.data %}
+{% endif %}
 {% set active_page = 'manage' %}
 {% block main %}
 <div class="container">
@@ -8,6 +12,10 @@
   {% call section('edit_user', 'Edit User', back_to_top=False) %}
   <form class="form-horizontal" method="post" role="form">
     {{ form_field(form.name) }}
+    {% if form.raw_pwd is defined %}
+      {{ form_field(form.raw_pwd) }}
+      {{ form_field(form.confirm_pwd) }}
+    {% endif %}
     {{ form_field(form.email) }}
     {{ form_field(form.projects, disabled=(not current_user.is_admin)) }}
     <div class="form-group">

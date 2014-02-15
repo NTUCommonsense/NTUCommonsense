@@ -6,8 +6,9 @@ from flask.ext.login import (current_user, login_user, logout_user,
                              login_required)
 from HTMLMinifier import minify
 
-from .forms import (SigninForm, UserForm, PublicationForm, ApplicationForm,
-                    ParameterForm, InterfaceForm, DownloadForm, ProjectForm)
+from .forms import (SigninForm, UserForm, CreateUserForm, PublicationForm,
+                    ApplicationForm, ParameterForm, InterfaceForm,
+                    DownloadForm, ProjectForm)
 from .models import User, Project, Interface
 
 module = Blueprint('projects', __name__)
@@ -205,6 +206,22 @@ def edit_user(user_id):
 
         flash('User information was successfully updated.')
         return _render_template('edit_user.html', form=form)
+
+    return _render_template('edit_user.html', form=form)
+
+
+@module.route('/user/new', methods=['GET', 'POST'])
+@login_required
+def create_user():
+    if not current_user.is_admin:
+        return abort(403)
+
+    user = User()
+    form = CreateUserForm(request.form, obj=user)
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        user.save()
+        return redirect(url_for('.show_users'))
 
     return _render_template('edit_user.html', form=form)
 

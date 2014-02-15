@@ -2,7 +2,7 @@
 
 from flask.ext.wtf import Form
 from wtforms.fields import TextField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, URL
+from wtforms.validators import DataRequired, URL, Email
 from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 from wtforms_alchemy import model_form_factory
 
@@ -34,7 +34,7 @@ class SigninForm(Form):
 
         user = User.login(self.email.data, self.pwd.data)
         if user is None:
-            self.email.errors.append('Invalid username or password')
+            self.email.errors.append('Invalid username or password.')
             return False
 
         self.user = user
@@ -45,9 +45,32 @@ class UserForm(_ModelForm):
     class Meta:
         model = User
         exclude = ('pwd',)
+        validators = {
+            'email': [Email()]
+        }
 
     projects = QuerySelectMultipleField('Projects', get_label='name',
                                         query_factory=_get_projects)
+
+
+class CreateUserForm(UserForm):
+    raw_pwd = PasswordField('Password', [DataRequired()])
+    confirm_pwd = PasswordField('Confirm Password', [DataRequired()])
+
+    def validate(self):
+        isvalid = super(CreateUserForm, self).validate()
+        if not isvalid:
+            return False
+
+        if self.raw_pwd.data != self.confirm_pwd.data:
+            self.raw_pwd.errors.append('Not matched.')
+            return False
+
+        return True
+
+    def populate_obj(self, obj):
+        super(CreateUserForm, self).populate_obj(obj)
+        obj.set_pwd(self.raw_pwd.data)
 
 
 class PublicationForm(_ModelForm):
