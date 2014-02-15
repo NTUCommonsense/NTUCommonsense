@@ -29,7 +29,9 @@
         </ul>
       </div>
       {% endif %}
-      <a class="btn btn-default btn-lg" href="{{ project.github_url }}" role="button">Visit Github Page »</a>
+      {% if project.github_url %}
+      <a class="btn btn-default btn-lg" href="{{ project.github_url }}" role="button">Visit GitHub Page »</a>
+      {% endif %}
     </div>
   </div>
 </header>
