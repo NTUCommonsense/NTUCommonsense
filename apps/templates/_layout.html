@@ -36,8 +36,12 @@
           <ul class="nav navbar-nav navbar-right">
             {% if not current_user.is_authenticated() %}
             <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="{{ url_for('.login') }}">Sign In</a></li>
+            {% elif current_user.is_admin %}
+            <li{% if active_page == 'projects' %} class="active"{% endif %}><a href="{{ url_for('.show_projects') }}">Projects</a></li>
+            <li{% if active_page == 'users' or active_page == 'account' %} class="active"{% endif %}><a href="{{ url_for('.show_users') }}">Users</a></li>
+            <li><a href="{{ url_for('.logout') }}">Sign Out</a></li>
             {% else %}
-            <li{% if active_page == 'manage' %} class="active"{% endif %}><a href="{% if current_user.is_admin %}{{ url_for('.show_users') }}{% else %}{{ url_for('.edit_user', user_id=current_user.id) }}{% endif %}">Manage</a></li>
+            <li{% if active_page == 'account' %} class="active"{% endif %}><a href="{{ url_for('.edit_user', user_id=current_user.id) }}">Account</a></li>
             <li><a href="{{ url_for('.logout') }}">Sign Out</a></li>
             {% endif %}
           </ul>

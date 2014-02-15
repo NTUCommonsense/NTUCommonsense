@@ -71,6 +71,15 @@ def index():
     return _render_template('index.html')
 
 
+@module.route('/projects')
+@login_required
+def show_projects():
+    if not current_user.is_admin:
+        return abort(403)
+
+    return _render_template('show_projects.html')
+
+
 @module.route('/project/<project>')
 def show_project(project):
     project = Project.query.filter_by(short_name=project).first()
