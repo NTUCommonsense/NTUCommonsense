@@ -92,7 +92,7 @@ def edit_project(project):
     if project is None:
         return abort(404)
 
-    if current_user not in project.managers:
+    if not current_user.is_admin and current_user not in project.managers:
         return abort(403)
 
     form = ProjectForm(request.form, obj=project)
@@ -106,6 +106,25 @@ def edit_project(project):
     return _render_template('edit_project.html', form=form, project=project)
 
 
+@module.route('/project/new', methods=['GET', 'POST'])
+@login_required
+def create_project():
+    if not current_user.is_admin:
+        return abort(403)
+
+    project = Project()
+    form = ProjectForm(request.form, obj=project)
+    if form.validate_on_submit():
+        form.populate_obj(project)
+        project.save()
+
+        flash('Project was successfully created.')
+        return redirect(url_for('.edit_project', project=project.short_name))
+
+    return _render_template('edit_item.html', name='Project',
+                            form=form, project=project, item=project)
+
+
 @module.route('/project/<project>/edit/<type>', methods=['GET', 'POST'])
 @login_required
 def edit_item(project, type):
@@ -114,7 +133,7 @@ def edit_item(project, type):
     if project is None or Form is None:
         return abort(404)
 
-    if current_user not in project.managers:
+    if not current_user.is_admin and current_user not in project.managers:
         return abort(403)
 
     Model = Form.Meta.model
@@ -150,7 +169,7 @@ def delete_item(project, type):
     if project is None:
         return abort(404)
 
-    if current_user not in project.managers:
+    if not current_user.is_admin and current_user not in project.managers:
         return abort(403)
 
     item_id = request.args.get('id')

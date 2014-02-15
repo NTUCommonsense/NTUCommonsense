@@ -9,7 +9,7 @@
   <div class="container">
     <h1>
       {{ project.name }}
-      {% if current_user in project.managers %}
+      {% if current_user.is_admin or current_user in project.managers %}
       <a id="edit-link" title="Edit this project" href="{{ url_for('.edit_project', project=project.short_name) }}"><span class="glyphicon glyphicon-pencil"></span></a>
       {% endif %}
     </h1>
