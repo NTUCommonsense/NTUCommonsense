@@ -130,15 +130,15 @@ def edit_item(project, type):
         form.populate_obj(item)
         item.save()
 
-        flash('{0} was successfully updated.'.format(Model.__name__))
+        flash('{0} was successfully updated.'.format(Model.__caption__))
         target = _get_page_after_action(type, project, item)
         return redirect(target)
 
-    if type == 'api':
+    if item_id is not None and type == 'api':
         return _render_template('edit_apis.html',
                                 form=form, project=project, item=item)
 
-    return _render_template('edit_item.html', name=Model.__name__,
+    return _render_template('edit_item.html', name=Model.__caption__,
                             form=form, project=project, item=item)
 
 
@@ -165,11 +165,11 @@ def delete_item(project, type):
     if request.args.get('confirmed'):
         item.delete()
 
-        flash('{0} was successfully deleted.'.format(Model.__name__))
+        flash('{0} was successfully deleted.'.format(Model.__caption__))
         target = _get_page_after_action(type, project, item)
         return redirect(target)
 
-    return _render_template('delete_item.html', name=Model.__name__,
+    return _render_template('delete_item.html', name=Model.__caption__,
                             project=project, item=item)
 
 

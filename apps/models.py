@@ -51,6 +51,7 @@ class _CRUDMixin(object):
 
 class User(_CRUDMixin, UserMixin, db.Model):
     __tablename__ = 'user'
+    __caption__ = 'User'
 
     email = db.Column(
         db.String(128), nullable=False, index=True, unique=True,
@@ -79,6 +80,7 @@ class User(_CRUDMixin, UserMixin, db.Model):
 
 class Publication(_CRUDMixin, db.Model):
     __tablename__ = 'publication'
+    __caption__ = 'Publication'
 
     title = db.Column(
         db.String(128), nullable=False,
@@ -101,6 +103,7 @@ class Publication(_CRUDMixin, db.Model):
 
 class Application(_CRUDMixin, db.Model):
     __tablename__ = 'application'
+    __caption__ = 'Application'
 
     name = db.Column(
         db.String(32), nullable=False,
@@ -123,6 +126,7 @@ class Application(_CRUDMixin, db.Model):
 
 class Parameter(_CRUDMixin, db.Model):
     __tablename__ = 'parameter'
+    __caption__ = 'Parameter'
 
     name = db.Column(
         db.String(32), nullable=False,
@@ -139,6 +143,7 @@ class Parameter(_CRUDMixin, db.Model):
 
 class Interface(_CRUDMixin, db.Model):
     __tablename__ = 'interface'
+    __caption__ = 'Web API'
 
     method = db.Column(
         db.Enum('GET', 'POST', 'PUT', 'DELETE'), nullable=False,
@@ -166,6 +171,7 @@ class Interface(_CRUDMixin, db.Model):
 
 class Download(_CRUDMixin, db.Model):
     __tablename__ = 'download'
+    __caption__ = 'Download'
 
     url = db.Column(
         db.String(128), nullable=False,
@@ -182,6 +188,7 @@ class Download(_CRUDMixin, db.Model):
 
 class Project(_CRUDMixin, db.Model):
     __tablename__ = 'project'
+    __caption__ = 'Project'
 
     name = db.Column(
         db.String(32), nullable=False,
