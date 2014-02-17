@@ -1,5 +1,5 @@
 {% extends '_layout.html' %}
-{% from '_macros.html' import section_from_template with context %}
+{% from '_macros.html' import section %}
 {% set page_title = project.name %}
 {% set author = project.managers|join(', ', attribute='name') %}
 {% set description = project.short_desc %}
@@ -49,7 +49,9 @@
     </div>
   </div>
   {% for id, caption in sections %}
-    {{ section_from_template(id, caption) }}
+    {% call section(id, caption, back_to_top) %}
+      {% include 'sections/_{0}.html'.format(id) %}
+    {% endcall %}
   {% endfor %}
 </div>
 {% endblock %}
