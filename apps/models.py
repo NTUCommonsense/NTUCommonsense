@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
 from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
@@ -209,7 +211,7 @@ class Project(_CRUDMixin, db.Model):
     update_date = db.Column(
         db.DateTime, nullable=False,
         server_default=db.func.now(),
-        onupdate=db.func.utc_timestamp())
+        onupdate=datetime.now)
 
     pubs = db.relationship('Publication', lazy='dynamic')
     apps = db.relationship('Application', lazy='dynamic')
