@@ -262,8 +262,8 @@ def create_user():
     return _render_template('edit_user.html', form=form)
 
 
-@module.route('/login', methods=['GET', 'POST'])
-def login():
+@module.route('/signin', methods=['GET', 'POST'])
+def signin():
     if current_user is not None and current_user.is_authenticated():
         return redirect(url_for('.index'))
 
@@ -275,8 +275,8 @@ def login():
     return _render_template('signin.html', form=form)
 
 
-@module.route('/logout')
+@module.route('/signout')
 @login_required
-def logout():
+def signout():
     logout_user()
     return redirect(url_for('.index'))

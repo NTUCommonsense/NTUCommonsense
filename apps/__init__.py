@@ -30,7 +30,7 @@ def _init_login(app):
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.user_loader(User.get)
-    login_manager.login_view = "/login"
+    login_manager.login_view = "/signin"
 
 
 def create_app(name=None, create_db=False):
