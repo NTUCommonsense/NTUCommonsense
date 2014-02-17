@@ -27,8 +27,8 @@ def _render_template(*args, **kwargs):
     return minify(html)
 
 
-def _create_project_item(Model, type, project):
-    if type == 'param':
+def _create_project_item(Model, item_type, project):
+    if item_type == 'param':
         api_id = request.args.get('api_id')
         api = Interface.get(api_id)
         if api is None or api.project_id != project.id:
@@ -41,13 +41,13 @@ def _create_project_item(Model, type, project):
     return item
 
 
-def _get_project_item(Model, type, project, item_id):
+def _get_project_item(Model, item_type, project, item_id):
     item = Model.get(id=item_id)
     if item is None:
         return None
 
     is_valid_item = False
-    if type == 'param':
+    if item_type == 'param':
         api = Interface.get(item.api_id)
         is_valid_item = api is not None and api.project_id == project.id
     else:
@@ -56,10 +56,10 @@ def _get_project_item(Model, type, project, item_id):
     return item if is_valid_item else None
 
 
-def _get_page_after_action(type, project, item):
-    if type == 'param':
+def _get_page_after_action(item_type, project, item):
+    if item_type == 'param':
         target = url_for('.edit_item', project=project.short_name,
-                         type='api', id=item.api_id)
+                         item_type='api', id=item.api_id)
     else:
         target = url_for('.edit_project', project=project.short_name)
 
@@ -141,11 +141,11 @@ def create_project():
                             subfields=[])
 
 
-@module.route('/project/<project>/edit/<type>', methods=['GET', 'POST'])
+@module.route('/project/<project>/edit/<item_type>', methods=['GET', 'POST'])
 @login_required
-def edit_item(project, type):
+def edit_item(project, item_type):
     project = Project.query.filter_by(short_name=project).first()
-    Form = _FORMS.get(type)
+    Form = _FORMS.get(item_type)
     if project is None or Form is None:
         return abort(404)
 
@@ -155,9 +155,9 @@ def edit_item(project, type):
     Model = Form.Meta.model
     item_id = request.args.get('id')
     if item_id is None:
-        item = _create_project_item(Model, type, project)
+        item = _create_project_item(Model, item_type, project)
     else:
-        item = _get_project_item(Model, type, project, item_id)
+        item = _get_project_item(Model, item_type, project, item_id)
         if item is None:
             return abort(404)
 
@@ -167,11 +167,11 @@ def edit_item(project, type):
         item.save()
 
         flash('{0} was successfully updated.'.format(Model.__caption__))
-        target = _get_page_after_action(type, project, item)
+        target = _get_page_after_action(item_type, project, item)
         return redirect(target)
 
     subfields = []
-    if item_id is not None and type == 'api':
+    if item_id is not None and item_type == 'api':
         subfields = [('param', 'Parameters', 'params', {'api_id': item.id})]
 
     return _render_template('edit_item.html', name=Model.__caption__,
@@ -179,9 +179,9 @@ def edit_item(project, type):
                             subfields=subfields)
 
 
-@module.route('/project/<project>/delete/<type>')
+@module.route('/project/<project>/delete/<item_type>')
 @login_required
-def delete_item(project, type):
+def delete_item(project, item_type):
     project = Project.query.filter_by(short_name=project).first()
     if project is None:
         return abort(404)
@@ -193,9 +193,9 @@ def delete_item(project, type):
     if item_id is None:
         return abort(404)
 
-    Form = _FORMS.get(type)
+    Form = _FORMS.get(item_type)
     Model = Form.Meta.model
-    item = _get_project_item(Model, type, project, item_id)
+    item = _get_project_item(Model, item_type, project, item_id)
     if item is None:
         return abort(404)
 
@@ -203,7 +203,7 @@ def delete_item(project, type):
         item.delete()
 
         flash('{0} was successfully deleted.'.format(Model.__caption__))
-        target = _get_page_after_action(type, project, item)
+        target = _get_page_after_action(item_type, project, item)
         return redirect(target)
 
     return _render_template('delete_item.html', name=Model.__caption__,
