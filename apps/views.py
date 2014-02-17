@@ -6,7 +6,7 @@ from flask.ext.login import (current_user, login_user, logout_user,
                              login_required)
 from HTMLMinifier import minify
 
-from .forms import (SigninForm, UserForm, CreateUserForm, PublicationForm,
+from .forms import (SigninForm, UserForm, SignupForm, PublicationForm,
                     ApplicationForm, ParameterForm, InterfaceForm,
                     DownloadForm, ProjectForm)
 from .models import User, Project, Interface
@@ -244,7 +244,7 @@ def create_user():
         return abort(403)
 
     user = User()
-    form = CreateUserForm(request.form, obj=user)
+    form = SignupForm(request.form, obj=user)
     if form.validate_on_submit():
         form.populate_obj(user)
         user.save()

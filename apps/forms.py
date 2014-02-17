@@ -53,12 +53,12 @@ class UserForm(_ModelForm):
                                         query_factory=_get_projects)
 
 
-class CreateUserForm(UserForm):
+class SignupForm(UserForm):
     raw_pwd = PasswordField('Password', [DataRequired()])
     confirm_pwd = PasswordField('Confirm Password', [DataRequired()])
 
     def validate(self):
-        isvalid = super(CreateUserForm, self).validate()
+        isvalid = super(SignupForm, self).validate()
         if not isvalid:
             return False
 
@@ -69,7 +69,7 @@ class CreateUserForm(UserForm):
         return True
 
     def populate_obj(self, obj):
-        super(CreateUserForm, self).populate_obj(obj)
+        super(SignupForm, self).populate_obj(obj)
         obj.set_pwd(self.raw_pwd.data)
 
 
