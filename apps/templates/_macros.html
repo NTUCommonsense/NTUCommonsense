@@ -16,12 +16,6 @@
 {% endcall %}
 {% endmacro %}
 
-{% macro editing_section(id, caption, project, items, back_to_top=True) %}
-{% call section(id + '_list', caption, back_to_top) %}
-  {{ editing_table(project, id, items, **kwargs) }}
-{% endcall %}
-{% endmacro %}
-
 {% macro form_field(field) %}
 <div class="form-group{% if field.errors %} has-error{% endif %}">
   {{ field.label(class_='col-sm-2 control-label') }}

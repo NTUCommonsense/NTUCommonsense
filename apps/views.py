@@ -112,7 +112,13 @@ def edit_project(project):
         flash('Project infromation was successfully updated.')
         return redirect(url_for('.edit_project', project=project.short_name))
 
-    return _render_template('edit_project.html', form=form, project=project)
+    subfields = [('pub', 'Publications', 'apps', {}),
+                 ('app', 'Applications', 'pubs', {}),
+                 ('api', 'Web APIs', 'apis', {}),
+                 ('download', 'Parameters', 'downloads', {})]
+    return _render_template('edit_item.html', name=Project.__caption__,
+                            form=form, project=project, item=project,
+                            subfields=subfields)
 
 
 @module.route('/project/new', methods=['GET', 'POST'])
@@ -130,8 +136,9 @@ def create_project():
         flash('Project was successfully created.')
         return redirect(url_for('.edit_project', project=project.short_name))
 
-    return _render_template('edit_item.html', name='Project',
-                            form=form, project=project, item=project)
+    return _render_template('edit_item.html', name=Project.__caption__,
+                            form=form, project=project, item=project,
+                            subfields=[])
 
 
 @module.route('/project/<project>/edit/<type>', methods=['GET', 'POST'])
@@ -163,12 +170,13 @@ def edit_item(project, type):
         target = _get_page_after_action(type, project, item)
         return redirect(target)
 
+    subfields = []
     if item_id is not None and type == 'api':
-        return _render_template('edit_apis.html',
-                                form=form, project=project, item=item)
+        subfields = [('param', 'Parameters', 'params', {'api_id': item.id})]
 
     return _render_template('edit_item.html', name=Model.__caption__,
-                            form=form, project=project, item=item)
+                            form=form, project=project, item=item,
+                            subfields=subfields)
 
 
 @module.route('/project/<project>/delete/<type>')

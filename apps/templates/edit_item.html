@@ -1,6 +1,19 @@
-{% extends '_edit_project.html' %}
-{% block content %}
-  {% call section('basic', 'Edit ' + name, back_to_top=False) %}
+{% extends '_layout.html' %}
+{% from '_macros.html' import section, editing_table, editing_form, show_messages %}
+{% set page_title = 'Edit {0} - {1}'.format(name, project.name) %}
+{% set author = project.managers|join(', ', attribute='name') %}
+{% set description = project.short_desc %}
+{% set active_page = project.short_name %}
+{% block main %}
+<div class="container">
+  {{ show_messages('success') }}
+  {% call section('basic', 'Edit ' + name, back_to_top=subfields|length) %}
     {{ editing_form(form) }}
   {% endcall %}
+  {% for id, caption, field, data in subfields %}
+    {% call section(field, caption, back_to_top=True) %}
+      {{ editing_table(project.short_name, id, item[field], **data) }}
+    {% endcall %}
+  {% endfor %}
+</div>
 {% endblock %}
