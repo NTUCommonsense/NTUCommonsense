@@ -106,10 +106,10 @@ def edit_project(project):
         flash('Project infromation was successfully updated.')
         return redirect(url_for('.edit_project', project=project.short_name))
 
-    subfields = [('pub', 'Publications', 'apps', {}),
-                 ('app', 'Applications', 'pubs', {}),
+    subfields = [('pub', 'Publications', 'pubs', {}),
+                 ('app', 'Applications', 'apps', {}),
                  ('api', 'Web APIs', 'apis', {}),
-                 ('download', 'Parameters', 'downloads', {})]
+                 ('download', 'Downloads', 'downloads', {})]
     return _render_template('edit_item.html', name=Project.__caption__,
                             form=form, project=project, item=project,
                             subfields=subfields)
