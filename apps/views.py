@@ -82,10 +82,7 @@ def show_projects():
 
 @module.route('/project/<project>')
 def show_project(project):
-    project = Project.query.filter_by(short_name=project).first()
-    if project is None:
-        return abort(404)
-
+    project = Project.query.filter_by(short_name=project).first_or_404()
     sections = [('pubs', 'Publications'),
                 ('apps', 'Applications'),
                 ('apis', 'Web APIs'),
@@ -97,10 +94,7 @@ def show_project(project):
 @module.route('/project/<project>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_project(project):
-    project = Project.query.filter_by(short_name=project).first()
-    if project is None:
-        return abort(404)
-
+    project = Project.query.filter_by(short_name=project).first_or_404()
     if not current_user.is_admin and current_user not in project.managers:
         return abort(403)
 
@@ -144,9 +138,9 @@ def create_project():
 @module.route('/project/<project>/edit/<item_type>', methods=['GET', 'POST'])
 @login_required
 def edit_item(project, item_type):
-    project = Project.query.filter_by(short_name=project).first()
+    project = Project.query.filter_by(short_name=project).first_or_404()
     Form = _FORMS.get(item_type)
-    if project is None or Form is None:
+    if Form is None:
         return abort(404)
 
     if not current_user.is_admin and current_user not in project.managers:
@@ -182,10 +176,7 @@ def edit_item(project, item_type):
 @module.route('/project/<project>/delete/<item_type>')
 @login_required
 def delete_item(project, item_type):
-    project = Project.query.filter_by(short_name=project).first()
-    if project is None:
-        return abort(404)
-
+    project = Project.query.filter_by(short_name=project).first_or_404()
     if not current_user.is_admin and current_user not in project.managers:
         return abort(403)
 
