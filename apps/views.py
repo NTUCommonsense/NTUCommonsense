@@ -77,7 +77,7 @@ def show_projects():
     if not current_user.is_admin:
         return abort(403)
 
-    return _render_template('show_projects.html')
+    return _render_template('list_projects.html')
 
 
 @module.route('/project/<project>')
@@ -216,7 +216,7 @@ def show_users():
     if not current_user.is_admin:
         return abort(403)
 
-    return _render_template('show_users.html', users=User.query.all())
+    return _render_template('list_users.html', users=User.query.all())
 
 
 @module.route('/user/<int:user_id>/edit', methods=['GET', 'POST'])
