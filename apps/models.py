@@ -166,7 +166,7 @@ class Interface(_CRUDMixin, db.Model):
     params = db.relationship('Parameter', lazy='dynamic')
 
     def __str__(self):
-        return self.format
+        return '[ {0} ] {1}'.format(self.method, self.format)
 
 
 class Download(_CRUDMixin, db.Model):

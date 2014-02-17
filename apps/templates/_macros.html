@@ -42,9 +42,13 @@
 {% macro editing_table(project, type, items) %}
 <table class="edit-table table table-striped">
   <colgroup>
-    <col class="col-xs-10 col-sm-10">
-    <col span="2" class="col-xs-1 col-sm-1">
+    <col class="name col-xs-10 col-sm-10">
+    <col span="2" class="control col-xs-1 col-sm-1">
   </colgroup>
+  <tr>
+    <th>Item</th>
+    <th colspan="2">Control</th>
+  </tr>
   {% for item in items %}
   <tr>
     <td>{{ item }}</td>
