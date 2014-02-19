@@ -1,9 +1,25 @@
 <ul class="pub-list">
   {% for pub in project.pubs %}
   <li class="pub">
-    <p class="title">{{ pub.title }}</p>
-    <p class="authors">{{ pub.authors }}</p>
-    <p class="publisher">{{ pub.publisher }}</p>
+    {% with entry = pub.parse() %}
+    <p class="title">{{ entry.fields.title }}</p>
+    <p class="authors">
+    {% with authors = entry.fields.author.split(' and ') %}
+      {% if authors|length > 1 %}
+        {{ authors[:-1]|join(', ') }} and {{ authors[-1] }}
+      {% else %}
+        {{ authors[0] }}
+      {% endif %}
+    {% endwith %}
+    </p>
+    <p class="publisher">
+    {% if entry.type in ('article',) %}
+      {{ entry.fields.journal }}
+    {% elif entry.type in ('inbook', 'incollection', 'inproceedings') %}
+      {{ entry.fields.publisher }}
+    {% endif %}
+    </p>
+    {% endwith %}
   </li>
   {% endfor %}
 </ul>

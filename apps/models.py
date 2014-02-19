@@ -2,6 +2,8 @@
 
 from datetime import datetime
 
+from BibPy import CitedEntryParser
+
 from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
@@ -82,23 +84,20 @@ class Publication(_CRUDMixin, db.Model):
     __tablename__ = 'publication'
     __caption__ = 'Publication'
 
-    title = db.Column(
-        db.String(128), nullable=False,
-        info={'label': 'Title'})
-    authors = db.Column(
-        db.String(128), nullable=False,
-        info={'label': 'Authors'})
-    publisher = db.Column(
-        db.String(128), nullable=False,
-        info={'label': 'Publisher'})
-    date = db.Column(
-        db.Date, nullable=False,
-        info={'label': 'Publish Date'})
+    bibtex = db.Column(
+        db.Text, nullable=False,
+        info={'label': 'BibTeX'})
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
+    parser = CitedEntryParser()
+
+    def parse(self):
+        return Publication.parser.parse(self.bibtex)
+
     def __str__(self):
-        return self.title
+        entry = self.parse()
+        return entry['fields']['title']
 
 
 class Application(_CRUDMixin, db.Model):
