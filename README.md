@@ -5,8 +5,8 @@
 * Clone
 
   ``` bash
-  $ git clone https://github.com/NTUCommonsense/NTUCommonsense.git
-  $ cd NTUCommonsense
+  $ git clone https://github.com/iAgentsCS/iAgentsCS.git
+  $ cd iAgentsCS
   ```
 
 * Install Requirements
