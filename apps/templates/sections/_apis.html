@@ -1,11 +1,11 @@
-{{ project.api_desc|escape|markdown|safe }}
+{{ project.api_desc|markdown|safe }}
 {% for api in project.apis %}
 <section class="subsection">
   <h1>{{ api.method }} <tt>{{ api.format }}</tt></h1>
   <table class="api-table table table-striped">
     <tr>
       <th>Description</th>
-      <td>{{ api.desc|escape|markdown|safe }}</td>
+      <td>{{ api.desc|markdown|safe }}</td>
     </tr>
     <tr>
       <th>Parameters</th>
@@ -13,18 +13,18 @@
         <dl class="param-list">
           {% for param in api.params %}
           <dt>{{ param.name }}</dt>
-          <dd>{{ param.desc|escape|markdown|safe }}</dd>
+          <dd>{{ param.desc|markdown|safe }}</dd>
           {% endfor %}
         </dl>
       </td>
     </tr>
     <tr>
       <th>Returns</th>
-      <td>{{ api.returns|escape|markdown|safe }}</td>
+      <td>{{ api.returns|markdown|safe }}</td>
     </tr>
     <tr>
       <th>Example</th>
-      <td>{{ api.example|escape|markdown|safe }}</td>
+      <td>{{ api.example|markdown|safe }}</td>
     </tr>
   </table>
 </section>

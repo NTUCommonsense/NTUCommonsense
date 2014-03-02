@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from markdown import markdown
+from mistune import Markdown
 
 
 def init_app(app):
-    app.jinja_env.filters['markdown'] = markdown
+    md = Markdown(escape=True)
+    app.jinja_env.filters['markdown'] = md.render

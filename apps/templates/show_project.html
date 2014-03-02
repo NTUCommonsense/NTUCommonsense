@@ -45,7 +45,7 @@
       </div>
     </aside>
     <div id="desc" class="col-md-9">
-      {{ project.desc|escape|markdown|safe }}
+      {{ project.desc|markdown|safe }}
     </div>
   </div>
   {% for id, caption in sections %}
