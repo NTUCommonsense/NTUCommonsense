@@ -146,7 +146,7 @@ class Interface(_CRUDMixin, db.Model):
     __caption__ = 'Web API'
 
     method = db.Column(
-        db.Enum('GET', 'POST', 'PUT', 'DELETE'), nullable=False,
+        db.Enum('GET', 'POST', 'PUT', 'DELETE', name='Method'), nullable=False,
         info={'label': 'Method'})
     format = db.Column(
         db.String(128), nullable=False,
